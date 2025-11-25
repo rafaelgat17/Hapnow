@@ -1,0 +1,42 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  bio: String
+}
+
+type Meeting @table {
+  title: String!
+  startTime: Timestamp!
+  endTime: Timestamp!
+  createdAt: Timestamp!
+  organizer: User
+  description: String
+  location: String
+}
+
+type MeetingAttendee @table(key: ["meeting", "user"]) {
+  meeting: Meeting!
+  user: User!
+  status: String!
+  createdAt: Timestamp!
+  respondedAt: Timestamp
+}
+
+type Note @table {
+  content: String!
+  createdAt: Timestamp!
+  meeting: Meeting
+  author: User
+}
+
+type ActionItem @table {
+  description: String!
+  dueDate: Date!
+  status: String!
+  createdAt: Timestamp!
+  meeting: Meeting
+  assignedTo: User
+  completedAt: Timestamp
+}

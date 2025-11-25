@@ -1,0 +1,61 @@
+mutation CreateNewUser($displayName: String!, $email: String!) @auth(level: USER, insecureReason: "This mutation is safe to expose to all logged in users.") {
+  user_insert(data: { displayName: $displayName, email: $email, createdAt_expr: "request.time" })
+}
+
+query GetMeetingById($meetingId: UUID!) @auth(level: USER) {
+  meeting(id: $meetingId) {
+    id
+    title
+    description
+    startTime
+    endTime
+    location
+    organizer {
+      id
+      displayName
+      email
+    }
+    actionItems_on_meeting {
+      id
+      description
+      dueDate
+      status
+      assignedTo {
+        id
+        displayName
+        email
+      }
+    }
+    notes_on_meeting {
+      id
+      content
+      author {
+        id
+        displayName
+        email
+      }
+    }
+  }
+}
+
+mutation UpdateActionItemStatus($actionItemId: UUID!, $status: String!) @auth(level: USER) {
+  actionItem_update(
+    id: $actionItemId
+    data: {
+      status: $status
+    }
+  )
+}
+
+query ListUpcomingMeetings @auth(level: USER) {
+  meetings(where: { startTime: { gt_time: { now: true } } }, orderBy: [{ startTime: ASC }]) {
+    id
+    title
+    startTime
+    endTime
+    location
+    organizer {
+      displayName
+    }
+  }
+}
