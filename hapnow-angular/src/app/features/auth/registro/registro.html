@@ -5,10 +5,14 @@
         {{ mensajeError }}
     </div>
 
+
+    <!-- ngSubmit se comunica con el metodo onSubmit() de typescript y se ejecuta una vez se envia el formulario -->
+    <!-- [formGroup] conecta con el formGroup de typescript -->
     <form [formGroup]="formularioRegistro" (ngSubmit)="onSubmit()">
         <div class="campo">
             <label for="nombre">Nombre</label>
             <input type="text" id="nombre" formControlName="nombre" placeholder="Escriba su nombre...">
+            <!-- formControlName esta asociado al FormControl llamado nombre que esta dentro del formGroup asociado que esta en la etiqueta form -->
             
             <div *ngIf="tieneError('nombre')" class="error">
                 {{ obtenerMensajeError('nombre') }}

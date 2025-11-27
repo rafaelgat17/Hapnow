@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="login-container">   
+    <h1>Inicia Sesión</h1>
+    
+    <div *ngIf="mensajeError" class="error-mensaje">
+        {{ mensajeError }}
+    </div>
+
+
+    <!-- ngSubmit se comunica con el metodo onSubmit() de typescript y se ejecuta una vez se envia el formulario -->
+    <!-- [formGroup] conecta con el formGroup de typescript -->
+    <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
+        <div class="campo">
+            <label for="email">Email</label>
+            <input type="email" id="email" formControlName="email" placeholder="Escriba su correo...">
+        </div>
+
+        <div class="campo">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" formControlName="password" placeholder="Escriba una contraseña...">
+        </div>
+
+        <button type="submit" [disabled]="cargando" class="btn-primary">
+            {{ cargando ? 'Iniciando sesión...' : 'Log in' }}
+        </button>
+
+    </form>
+
+    <p class="link-register">
+        ¿No tienes cuenta?
+        <a (click)="irAlRegistro()">Registrate</a>
+    </p>
+</div> 

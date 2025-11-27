@@ -70,7 +70,7 @@ tieneError(campo: string): boolean {
 // se usa la doble negacion (!!) para devolver siempre un booleano
 // invalid comprueba que el campo cumple o no con los requisitos que debe tener
 // touched salta a true cuando entra al campo y sale sin cumplir las validaciones
-// dirty salta a true cuando entra al campo, y, al ir escribiendo, no cumple con los requisitos ya que se actualiza 
+// dirty salta a true cuando entra al campo, y, al ir escribiendo, no cumple con los requisitos ya que se actualiza
 
 obtenerMensajeError(campo: string): string {
   const controlDeError = this.formularioRegistro.get(campo)
@@ -86,7 +86,8 @@ obtenerMensajeError(campo: string): string {
   }
 
   return 'Error de validación';
-
+  
+  // Este metodo devolvera el mensaje de error correspondiente a segun que campo del formulario
   
 }
 
@@ -94,7 +95,7 @@ irAlLogin(): void {
   this.router.navigate(['/login']);
 }
 
-// Este metodo devolvera el mensaje de error correspondiente a segun que campo del formulario
+
 
 }
 
