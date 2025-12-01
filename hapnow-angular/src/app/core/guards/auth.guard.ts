@@ -5,7 +5,7 @@ import { AuthService } from '../services/auth.service';
 export const authGuard: CanActivateFn = (route, state) => {
     // CanActivateFn decide si se puede o no acceder a una ruta
 const authService = inject(AuthService);
-// Pide acceso al servicio de autenticacion
+// Pide acceso al servicio de autenticacion y comprueba si alguien esta logeado
 const router = inject(Router);
 
 if (authService.isAuthenticated()) {

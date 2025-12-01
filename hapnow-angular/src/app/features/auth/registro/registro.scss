@@ -1,3 +1,95 @@
+.registro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    border: 2px solid #00D9A3;
+    padding: 2rem;
+    text-align: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 90%; 
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.link-login {
+    display: flex;
+    flex-direction: column;
+}
+
+.div-svg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+label, h1, p {
+    color: white;
+}
+
+label {
+    text-align: left;
+}
+
+h1 {
+    color: #00D9A3;
+}
+
 a {
     cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+input {
+    margin-bottom: 1rem;
+    background-color: #1A1A1A;
+    color: #00D9A3;
+    border: 2px solid #00D9A3;
+    border-radius: 12px;
+    padding-left: 21px;
+    padding-right: 21px;
+    padding-bottom: 11px;
+    padding-top: 11px;
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
+.boton1 {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: #00D9A3;
+    border-style: none;
+    color: #1A1A1A;
+    border-radius: 12px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}
+
+.boton2 {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: #1A1A1A;
+    color: #00D9A3;
+    border: 2px solid #00D9A3;
+    border-radius: 12px;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    margin-top: 1rem;
 }

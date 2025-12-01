@@ -30,22 +30,17 @@ export class LoginComponent {
   // Esta estructura coincide con la de la interfaz de usuario.models.ts
 }
 
-async onSubmit(): Promise<void>{
+async onSubmit(): Promise<void> {
+  
   if (this.formularioLogin.invalid) {
     this.formularioLogin.markAllAsTouched();
-
-    // Si el formulario es invalido...
     return;
   }
 
   this.cargando = true;
   this.mensajeError = null;
 
-  const datos: LoginData = {
-    email: this.formularioLogin.value.email,
-    password: this.formularioLogin.value.password
-  }
-  // Obtiene los datos del login
+  const datos: LoginData = this.formularioLogin.value;
 
   try {
     await this.authService.login(datos);
@@ -55,6 +50,8 @@ async onSubmit(): Promise<void>{
     this.cargando = false;
   }
 }
+
+
 
 irAlRegistro(): void {
   this.router.navigate(['/registro']);

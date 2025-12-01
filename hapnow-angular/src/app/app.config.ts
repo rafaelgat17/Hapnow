@@ -1,8 +1,4 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  provideZoneChangeDetection
-} from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
@@ -13,7 +9,6 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { provideMessaging, getMessaging } from '@angular/fire/messaging';
 
-// Tu config
 import { firebaseConfig } from './firebase-config';
 
 export const appConfig: ApplicationConfig = {
@@ -24,9 +19,11 @@ export const appConfig: ApplicationConfig = {
 
     // Inicialización Firebase correcta
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    // esteblece la conexion con las credenciales de Firebase establecidas en firebase-config.ts
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
     provideStorage(() => getStorage()),
     provideMessaging(() => getMessaging())
+    // estos son los servicios establecidos para el proyecto en firebase
   ]
 };

@@ -11,16 +11,15 @@ export class AuthService { private auth = inject(Auth); private firestore = inje
 usuarioActual = signal<Usuario | null>(null);
 
 constructor() {
-    // Cuando el servicio arranca comprueba si hay alguien logueado
-    user(this.auth).subscribe((firebaseUser: User | null) => {
-        if (firebaseUser) {
-            this.cargarDatosUsuario(firebaseUser.uid);
-            // Si es firebaseUser: User carga los datos completos desde Firestore
-        } else {
-            this.usuarioActual.set(null);
-            // Si no hay nadie el usuario es nulo
-        }
-    });
+  // Escuchar cambios de autenticación
+  user(this.auth).subscribe((firebaseUser: User | null) => {
+    if (firebaseUser) {
+      // Usar setTimeout para evitar problemas de contexto
+      setTimeout(() => this.cargarDatosUsuario(firebaseUser.uid), 0);
+    } else {
+      this.usuarioActual.set(null);
+    }
+  });
 }
 
 // REGISTRO
@@ -33,6 +32,7 @@ async registrar(datos: RegistroData): Promise<void> {
         datos.password
         // Ingresa un email y contraseña 
     );
+    // este es un metodo propio de firebase
 
     // Crear perfil en Firestore
     const nuevoUsuario: Usuario = {
@@ -50,7 +50,9 @@ async registrar(datos: RegistroData): Promise<void> {
     // Guardar en Firestore
     await setDoc(
         doc(this.firestore, `usuarios/${credencial.user.uid}`),
+        // aqui se especifica donde guardar
         nuevoUsuario
+        // aqui que guardar, concretamente el nuevo perfil creado
     );
 
     // Actualizar signal
@@ -60,7 +62,6 @@ async registrar(datos: RegistroData): Promise<void> {
     // Redirige al dashboard
     this.router.navigate(['/dashboard']);
     
-    console.log('Usuario registrado:', nuevoUsuario);
     } catch (error: any) {
     console.error('Error en registro:', error);
     throw this.manejarError(error);
@@ -69,6 +70,8 @@ async registrar(datos: RegistroData): Promise<void> {
     // Aqui saltarian los mensajes en caso de exito (Usuario registrado)
     // O el mensaje de error (Error en el registro)
 }
+
+
 
 // LOGIN
 async login(datos: LoginData): Promise<void> {
@@ -87,7 +90,6 @@ async login(datos: LoginData): Promise<void> {
     // Redirigir a dashboard
     this.router.navigate(['/dashboard']);
 
-    console.log('Login exitoso');
     } catch (error: any) {
     console.error('Error en login:', error);
     throw this.manejarError(error);
@@ -95,6 +97,8 @@ async login(datos: LoginData): Promise<void> {
 
     // Aqui se manejan los errores
 }
+
+
 
   // LOGOUT
 async logout(): Promise<void> {
@@ -104,7 +108,6 @@ async logout(): Promise<void> {
     // Se setea el usuarioActual a null
     this.router.navigate(['/login']);
     // Se redirige a la pagina de login
-    console.log('Sesión cerrada');
     
     } catch (error) {
     console.error('Error al cerrar sesión:', error);
@@ -113,24 +116,27 @@ async logout(): Promise<void> {
     }
 }
 
+
+
+
   // CARGAR DATOS DEL USUARIO
 private async cargarDatosUsuario(uid: string): Promise<void> {
-    try {
+  try {
     const docRef = doc(this.firestore, `usuarios/${uid}`);
-    // Le da la informacion correspondiente al uid
+    // seria la ubicacion exacta de donde se ha guardado con setdoc el documento de registro de firestore de antes
     const docSnap = await getDoc(docRef);
-    // Le trae el contenido de ese documento perteneciente a ese uid
+    // ejecuta la lectura
 
     if (docSnap.exists()) {
-        this.usuarioActual.set(docSnap.data() as Usuario);
-        // Si existe docSnap (los datos correspondientes a ese uid) los manda en formato objeto js
-    } else {
-        console.error('Usuario no encontrado en Firestore');
+      this.usuarioActual.set(docSnap.data() as Usuario);
     }
-    } catch (error) {
+  } catch (error) {
     console.error('Error al cargar datos del usuario:', error);
-    }
+  }
 }
+
+
+
 
   // VERIFICAR SI ESTÁ AUTENTICADO
 isAuthenticated(): boolean {
