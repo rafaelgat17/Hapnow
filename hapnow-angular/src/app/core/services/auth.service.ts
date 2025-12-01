@@ -1,21 +1,39 @@
 import { Injectable, inject, signal } from '@angular/core';
+// inject: Función moderna de Angular para inyectar dependencias.
+// signal: Función de Angular para crear un estado reactivo que notifica a la UI sobre cambios.
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, User } from '@angular/fire/auth';
+// Importa funciones específicas del SDK modular de Firebase Auth para crear, loguear, desloguear y escuchar el estado.
 import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
+// Importa funciones del SDK modular de Firebase Firestore (DB):
+// Firestore: Tipo base para la inyección.
+// doc: Crea una referencia a un documento específico.
+// setDoc/getDoc: Escriben o leen un documento en la DB.
 import { Usuario, RegistroData, LoginData } from '../../shared/models/usuario.model';
+// Importa la estructura de datos que usa este servicio (tipo de usuario, datos para login/registro).
+
+
 
 @Injectable({ providedIn: 'root' })
+// providedIn: 'root' asegura que este servicio sea un singleton (una sola instancia)
+// y esté disponible globalmente sin necesidad de módulos.
 export class AuthService { private auth = inject(Auth); private firestore = inject(Firestore); private router = inject(Router);
+
 
 // Signal para estado del usuario actual
 usuarioActual = signal<Usuario | null>(null);
+// El estado reactivo central: guarda el objeto Usuario completo o null.
+// Cualquier componente que lea este Signal se actualizará automáticamente si cambia.
 
 constructor() {
   // Escuchar cambios de autenticación
   user(this.auth).subscribe((firebaseUser: User | null) => {
+    // Listener reactivo de Firebase que se dispara inmediatamente y cada vez que el estado de Auth cambia (login/logout).
     if (firebaseUser) {
-      // Usar setTimeout para evitar problemas de contexto
+      // Si Firebase confirma un usuario logueado:
+      // Usar setTimeout para evitar problemas de contexto
       setTimeout(() => this.cargarDatosUsuario(firebaseUser.uid), 0);
+      // Llama a la función para cargar el perfil completo (nombre, rol, etc.) desde Firestore.
     } else {
       this.usuarioActual.set(null);
     }
@@ -30,13 +48,13 @@ async registrar(datos: RegistroData): Promise<void> {
         this.auth,
         datos.email,
         datos.password
-        // Ingresa un email y contraseña 
+        // Crea la credencial de inicio de sesión y obtiene un UID (ID de usuario único).
     );
-    // este es un metodo propio de firebase
+    // este es un metodo propio de firebase (createUserWithEmailAndPassword)
 
     // Crear perfil en Firestore
     const nuevoUsuario: Usuario = {
-        uid: credencial.user.uid,
+        uid: credencial.user.uid, // usa el uid generado por firebase auth
         email: datos.email,
         nombre: datos.nombre,
         reputacion: 0,
@@ -52,12 +70,12 @@ async registrar(datos: RegistroData): Promise<void> {
         doc(this.firestore, `usuarios/${credencial.user.uid}`),
         // aqui se especifica donde guardar
         nuevoUsuario
-        // aqui que guardar, concretamente el nuevo perfil creado
+        // setDoc: Escribe o sobrescribe el documento del perfil de usuario en la base de datos.
     );
 
     // Actualizar signal
     this.usuarioActual.set(nuevoUsuario);
-    // Guarda en memoria quien esta registrado ahora mismo. (signal es una variable reactiva)
+    // Actualiza el estado reactivo central con el nuevo perfil.
 
     // Redirige al dashboard
     this.router.navigate(['/dashboard']);
@@ -86,6 +104,7 @@ async login(datos: LoginData): Promise<void> {
 
     // Cargar datos del usuario desde Firestore
     await this.cargarDatosUsuario(credencial.user.uid);
+    // Llama a la función que recuperará el perfil completo desde Firestore.
 
     // Redirigir a dashboard
     this.router.navigate(['/dashboard']);
@@ -104,8 +123,9 @@ async login(datos: LoginData): Promise<void> {
 async logout(): Promise<void> {
     try {
     await signOut(this.auth);
+    // signOut(): Instrucción directa a Firebase para cerrar la sesión activa.
     this.usuarioActual.set(null);
-    // Se setea el usuarioActual a null
+    // Se setea el usuarioActual a null (buena practica)
     this.router.navigate(['/login']);
     // Se redirige a la pagina de login
     
@@ -123,15 +143,19 @@ async logout(): Promise<void> {
 private async cargarDatosUsuario(uid: string): Promise<void> {
   try {
     const docRef = doc(this.firestore, `usuarios/${uid}`);
-    // seria la ubicacion exacta de donde se ha guardado con setdoc el documento de registro de firestore de antes
+    // docRef: Crea la referencia (dirección) al documento del perfil de usuario en Firestore.
     const docSnap = await getDoc(docRef);
-    // ejecuta la lectura
+    // getDoc: Comando que lee el documento desde el servidor de Firestore.
+    // docSnap: Es la "instantánea" del resultado de la lectura.
 
     if (docSnap.exists()) {
+      // docSnap.exists(): Verifica si el documento fue encontrado en esa dirección.
       this.usuarioActual.set(docSnap.data() as Usuario);
+      // docSnap.data(): Extrae los datos del documento y actualiza la Signal.
     }
   } catch (error) {
     console.error('Error al cargar datos del usuario:', error);
+    // Función simple que devuelve true si la Signal contiene un objeto Usuario (está logueado).
   }
 }
 
@@ -154,6 +178,7 @@ private manejarError(error: any): string {
     'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde',
     'auth/network-request-failed': 'Error de conexión'
     };
+    // Mapeo de códigos de error de Firebase a mensajes amigables y legibles para el usuario final.
 
     return errores[error.code] || 'Error desconocido. Intenta de nuevo';
     }

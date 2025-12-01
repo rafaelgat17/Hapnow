@@ -13,6 +13,17 @@
     margin: 0 auto;
 }
 
+.main-content {
+    display: grid;
+    /* Define dos columnas: la primera (imágenes) y la segunda (formulario). */
+    grid-template-columns: 1.2fr 1fr; 
+    gap: 40px; 
+    max-width: 1200px;
+    margin: 0 auto; /* Centra el contenedor principal */
+    align-items: center;
+    padding-bottom: 50px;
+}
+
 .campo {
     display: flex;
     flex-direction: column;
@@ -76,6 +87,10 @@ input {
 
 form {
     margin-bottom: 1rem;
+}
+
+img {
+    border-radius: 12px;
 }
 
 .boton1 {

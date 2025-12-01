@@ -4,40 +4,48 @@
     </svg>
 </div>
 
-<div class="titulo-login">
-    <h1 class="h1-login">Bienvenido a <br> Hapnow</h1>
+<div class="main-content">
 
-    <p class="p-login">Eventos espontáneos cerca de ti.</p>
+<img src="personas1.jpeg" alt="" height="300">
+<img src="personas2.jpeg" alt="" height="300">
+
+    
+
+    <div class="login-container">   
+        <div class="titulo-login">
+        <h1 class="h1-login">Bienvenido a <br> Hapnow</h1>
+
+        <p class="p-login">Eventos espontáneos cerca de ti.</p>
+    </div>
+        
+        <div *ngIf="mensajeError" class="error-mensaje">
+            {{ mensajeError }}
+        </div>
+
+
+        <!-- ngSubmit se comunica con el metodo onSubmit() de typescript y se ejecuta una vez se envia el formulario -->
+        <!-- [formGroup] conecta con el formGroup de typescript -->
+        <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
+            <div class="campo">
+                <label for="email">Email</label>
+                <input type="email" id="email" formControlName="email" placeholder="Escriba su correo...">
+            </div>
+
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" formControlName="password" placeholder="Escriba una contraseña...">
+            </div>
+
+            <button type="submit" [disabled]="cargando" class="boton1">
+                {{ cargando ? 'Iniciando sesión...' : 'Log in' }}
+            </button>
+
+        </form>
+
+        <p class="link-register">
+            ¿No tienes cuenta?
+            <button class="boton2"><a (click)="irAlRegistro()">Registrate</a></button>
+        </p>
+    </div> 
 </div>
 
-<div class="login-container">   
-    
-    <div *ngIf="mensajeError" class="error-mensaje">
-        {{ mensajeError }}
-    </div>
-
-
-    <!-- ngSubmit se comunica con el metodo onSubmit() de typescript y se ejecuta una vez se envia el formulario -->
-    <!-- [formGroup] conecta con el formGroup de typescript -->
-    <form [formGroup]="formularioLogin" (ngSubmit)="onSubmit()">
-        <div class="campo">
-            <label for="email">Email</label>
-            <input type="email" id="email" formControlName="email" placeholder="Escriba su correo...">
-        </div>
-
-        <div class="campo">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" formControlName="password" placeholder="Escriba una contraseña...">
-        </div>
-
-        <button type="submit" [disabled]="cargando" class="boton1">
-            {{ cargando ? 'Iniciando sesión...' : 'Log in' }}
-        </button>
-
-    </form>
-
-    <p class="link-register">
-        ¿No tienes cuenta?
-        <button class="boton2"><a (click)="irAlRegistro()">Registrate</a></button>
-    </p>
-</div> 
