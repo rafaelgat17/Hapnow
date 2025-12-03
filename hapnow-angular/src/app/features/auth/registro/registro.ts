@@ -1,10 +1,22 @@
-import { Component } from '@angular/core';
-import { inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
+// Component: Decorador para la clase. inject: Función de inyección moderna.
+
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+// Importa las herramientas para la gestión de formularios reactivos:
+// FormGroup: Estructura que contiene los controles.
+// Validators: Reglas de validación (required, email, minLength).
+
 import { Router } from '@angular/router';
+// Permite la navegación programática (ej. irAlLogin).
+
 import { CommonModule } from '@angular/common';
+// Módulo para usar directivas estructurales (ej. *ngIf, *ngFor).
+
 import { AuthService } from '../../../core/services/auth.service';
+// Importa el servicio clave que contiene la lógica de negocio y la comunicación con Firebase.
+
 import { RegistroData } from '../../../shared/models/usuario.model';
+// Importa la interfaz para tipar los datos que se enviarán a AuthService.registrar().
 
 @Component({
   selector: 'app-registro',
@@ -15,8 +27,13 @@ import { RegistroData } from '../../../shared/models/usuario.model';
 export class RegistroComponent {
 
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
-  private router = inject(Router);
+  // Inyección de FormBuilder para construir el formulario en el constructor.
+
+    private authService = inject(AuthService);
+  // Inyección del servicio para llamar a la función registrar().
+
+    private router = inject(Router);
+  // Inyección del router para la navegación.
   
   formularioRegistro: FormGroup;
   cargando = false;
@@ -31,11 +48,13 @@ export class RegistroComponent {
 }
 
 async onSubmit(): Promise<void>{
-  if (this.formularioRegistro.invalid) {
-    this.formularioRegistro.markAllAsTouched();
-
-    // Si el formulario es invalido...
-    return;
+// Método que se ejecuta al enviar el formulario. Es asíncrono porque espera la respuesta de Firebase.
+  if (this.formularioRegistro.invalid) {
+    this.formularioRegistro.markAllAsTouched();
+    // marca todos los campos como 'tocados' para que se activen las alertas de error en el HTML.
+    // Si el formulario es invalido...
+    return;
+    // Detiene la ejecución si la validación falla.
   }
 
   this.cargando = true;
@@ -48,22 +67,28 @@ async onSubmit(): Promise<void>{
   }
   // Obtiene los datos del registro
 
-  try {
-    await this.authService.registrar(datos);
-  } catch (error: any) {
-    this.mensajeError = error;
-  } finally {
-    this.cargando = false;
-  }
+try {
+    await this.authService.registrar(datos);
+    // Llama al servicio, que se encarga del proceso de dos pasos (Auth y Firestore).
+    // Si tiene éxito, el AuthService también se encarga de la redirección.
+  } catch (error: any) {
+    this.mensajeError = error;
+    // Captura el error devuelto por el AuthService (ya traducido a un string amigable).
+  } finally {
+    this.cargando = false;
+    // Finaliza el estado de carga, independientemente del resultado.
+  }
 }
-
 // Se ejecutara cuando el usuario le de a Registrarse, validara si el formulario es correcto
 
 tieneError(campo: string): boolean {
-  
-  const control = this.formularioRegistro.get(campo);
+// Función de utilidad para verificar si un campo debe mostrar un error en el HTML.
+  
+  const control = this.formularioRegistro.get(campo);
+// Obtiene el control específico (ej. 'email') del formulario.
 
-  return !!(control?.invalid && (control?.touched || control?.dirty));
+  return !!(control?.invalid && (control?.touched || control?.dirty));
+// Retorna true si el campo es inválido Y (el usuario lo tocó O ha escrito algo en él).
 }
 
 // Hara que muestre errores debajo de cada campo
@@ -94,8 +119,6 @@ obtenerMensajeError(campo: string): string {
 irAlLogin(): void {
   this.router.navigate(['/login']);
 }
-
-
 
 }
 

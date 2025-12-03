@@ -1,13 +1,44 @@
+$primary-color: #00D9A3;
+$background-color: #1A1A1A;
+$text-color-light: white;
+$border-radius: 12px;
+$border-width: 2px;
+$font-weight-bold: 700;
+
+label, h1, p {
+    color: $text-color-light;
+}
+
+label {
+    text-align: left;
+}
+
+h1 {
+    color: $primary-color;
+}
+
+a {
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
 .registro-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 12px;
-    border: 2px solid #00D9A3;
+    border-radius: $border-radius;
+    border: $border-width solid $primary-color;
+    background-color: $background-color;
     padding: 2rem;
     text-align: center;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    padding: 10px 2rem; 
     width: 90%; 
     max-width: 300px;
     margin: 0 auto;
@@ -31,65 +62,32 @@
     margin-bottom: 3rem;
 }
 
-label, h1, p {
-    color: white;
-}
-
-label {
-    text-align: left;
-}
-
-h1 {
-    color: #00D9A3;
-}
-
-a {
-    cursor: pointer;
-}
-
-button {
-    cursor: pointer;
-}
-
 input {
     margin-bottom: 1rem;
-    background-color: #1A1A1A;
-    color: #00D9A3;
-    border: 2px solid #00D9A3;
-    border-radius: 12px;
-    padding-left: 21px;
-    padding-right: 21px;
-    padding-bottom: 11px;
-    padding-top: 11px;
-}
-
-form {
-    margin-bottom: 1rem;
+    background-color: $background-color;
+    color: $primary-color;
+    border: $border-width solid $primary-color;
+    border-radius: $border-radius;
+    padding: 11px 21px; 
 }
 
 .boton1 {
     font-size: 16px;
-    font-weight: 700;
-    background-color: #00D9A3;
+    font-weight: $font-weight-bold;
+    background-color: $primary-color;
     border-style: none;
-    color: #1A1A1A;
-    border-radius: 12px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    color: $background-color;
+    border-radius: $border-radius;
+    padding: 15px 2rem;
 }
 
 .boton2 {
     font-size: 16px;
-    font-weight: 700;
-    background-color: #1A1A1A;
-    color: #00D9A3;
-    border: 2px solid #00D9A3;
-    border-radius: 12px;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    font-weight: $font-weight-bold;
+    background-color: $background-color;
+    color: $primary-color;
+    border: $border-width solid $primary-color;
+    border-radius: $border-radius;
+    padding: 15px 3rem;
     margin-top: 1rem;
 }

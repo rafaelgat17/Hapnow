@@ -1,0 +1,74 @@
+.navbar-container {
+    display: flex;
+    justify-content: space-between; /* Distribuye el espacio: logo a la izquierda, menú a la derecha */
+    align-items: center; /* Centra verticalmente todos los elementos */
+    background-color: #1A1A1A; /* Un color oscuro para el fondo del navbar */
+    border-bottom: 2px solid #00D9A3;
+    padding: 10px 15px;
+    height: 50px; /* Altura fija para el navbar */
+}
+
+/* --- LOGO (SVG) --- */
+.div-svg {
+    /* Aquí puedes ajustar el tamaño del logo si es necesario */
+    max-width: 150px; 
+    height: auto;
+}
+
+
+/* --- MENÚ DERECHO (Buscador + Iconos) --- */
+.right-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 13px; /* Espacio entre el buscador y los iconos */
+}
+
+/* --- BUSCADOR --- */
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: #1A1A1A; /* Fondo para la barra de búsqueda */
+    border-radius: 12px;
+    border: 2px solid #00D9A3;
+    padding: 5px 15px;
+}
+
+.search-input {
+    border: none;
+    background: none;
+    color: white;
+    padding: 5px;
+    outline: none; /* Quita el borde de enfoque por defecto */
+    width: 200px;
+    font-style: italic;
+}
+
+.search-icon {
+    cursor: pointer;
+    color: #00D9A3; /* Color de tu marca */
+    padding-left: 10px;
+}
+
+/* --- ICONOS (Campana y Perfil) --- */
+.icon-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre los dos iconos */
+}
+
+.icon {
+    cursor: pointer;
+    transition: transform 0.2s;
+    /* Estilos para los SVGs */
+    & svg {
+        stroke: #FEFEFE;
+    }
+    
+    &:hover {
+        transform: scale(1.1);
+        & svg {
+             stroke: #00D9A3; /* Color de marca al pasar el ratón */
+        }
+    }
+}

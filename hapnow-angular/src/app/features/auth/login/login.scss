@@ -1,27 +1,106 @@
+$primary-color: #00D9A3;
+$background-color: #1A1A1A;
+$text-color-light: white;
+$border-radius: 12px;
+$border-width: 2px;
+$font-weight-bold: 700;
+
+label, h1, p {
+    color: $text-color-light;
+}
+
+label {
+    text-align: left;
+}
+
+h1 {
+    color: $primary-color;
+}
+
+a {
+    color: $primary-color;
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    border-radius: $border-radius;
+}
+
+form {
+    margin-bottom: 1rem;
+}
+
+input {
+    margin-bottom: 1rem;
+    background-color: $background-color;
+    color: $primary-color;
+    border: $border-width solid $primary-color;
+    border-radius: $border-radius;
+    padding: 11px 21px; 
+}
+
 .login-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 12px;
-    border: 2px solid #00D9A3;
+    border-radius: $border-radius;
+    border: $border-width solid $primary-color;
     padding: 2rem;
     text-align: center;
-    padding-bottom: 2rem;
-    padding-top: 2rem;
     width: 90%; 
     max-width: 300px;
     margin: 0 auto;
+    background-color: $background-color;
+    
+    .titulo-login {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .p-login {
+        color: $primary-color;
+    }
 }
 
 .main-content {
     display: grid;
-    /* Define dos columnas: la primera (imágenes) y la segunda (formulario). */
-    grid-template-columns: 1.2fr 1fr; 
+    grid-template-columns: 2fr 1fr; 
     gap: 40px; 
     max-width: 1200px;
-    margin: 0 auto; /* Centra el contenedor principal */
+    margin: 0 auto;
     align-items: center;
     padding-bottom: 50px;
+}
+
+.contenedor-imagenes {
+    position: relative;
+    width: 650px;
+    height: 100px;
+
+    img {
+        width: 500px;
+        height: auto;
+    }
+
+    .img-1 {
+        border-radius: $border-radius;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .img-2 {
+        border-radius: $border-radius;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 2;
+    }
 }
 
 .campo {
@@ -42,80 +121,40 @@
     margin-bottom: 3rem;
 }
 
-.titulo-login {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.p-login {
-    color: #00D9A3;
-}
-
-
-label, h1, p {
-    color: white;
-}
-
-label {
-    text-align: left;
-}
-
-h1 {
-    color: #00D9A3;
-}
-
-a {
-    color: #00D9A3;
-    cursor: pointer;
-}
-
-button {
-    cursor: pointer;
-}
-
-input {
-    margin-bottom: 1rem;
-    background-color: #1A1A1A;
-    color: #00D9A3;
-    border: 2px solid #00D9A3;
-    border-radius: 12px;
-    padding-left: 21px;
-    padding-right: 21px;
-    padding-bottom: 11px;
-    padding-top: 11px;
-}
-
-form {
-    margin-bottom: 1rem;
-}
-
-img {
-    border-radius: 12px;
-}
 
 .boton1 {
     font-size: 16px;
-    font-weight: 700;
-    background-color: #00D9A3;
+    font-weight: $font-weight-bold;
+    background-color: $primary-color;
     border-style: none;
-    color: #1A1A1A;
-    border-radius: 12px;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    color: $background-color;
+    border-radius: $border-radius;
+    padding: 15px 3rem;
 }
 
 .boton2 {
     font-size: 16px;
-    font-weight: 700;
-    background-color: #1A1A1A;
-    color: #00D9A3;
-    border: 2px solid #00D9A3;
-    border-radius: 12px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    font-weight: $font-weight-bold;
+    background-color: $background-color;
+    color: $primary-color;
+    border: $border-width solid $primary-color;
+    border-radius: $border-radius;
+    padding: 15px 2rem;
     margin-top: 1rem;
+}
+
+@media (max-width: 920px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .contenedor-imagenes {
+        display: none;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 320px;
+    }
 }
