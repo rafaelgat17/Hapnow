@@ -50,7 +50,7 @@ export class RegistroComponent {
 async onSubmit(): Promise<void>{
 // Método que se ejecuta al enviar el formulario. Es asíncrono porque espera la respuesta de Firebase.
   if (this.formularioRegistro.invalid) {
-    this.formularioRegistro.markAllAsTouched();
+    this.formularioRegistro.markAllAsTouched();
     // marca todos los campos como 'tocados' para que se activen las alertas de error en el HTML.
     // Si el formulario es invalido...
     return;
@@ -116,9 +116,9 @@ obtenerMensajeError(campo: string): string {
   
 }
 
-irAlLogin(): void {
-  this.router.navigate(['/login']);
-}
+  irAlLogin(): void {
+    this.router.navigate(['/login']);
+  }
 
 }
 

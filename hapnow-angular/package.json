@@ -27,14 +27,15 @@
     "@angular/core": "^20.3.0",
     "@angular/fire": "^20.0.1",
     "@angular/forms": "^20.3.0",
+    "@angular/google-maps": "^21.0.2",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
     "@dataconnect/generated": "file:src/dataconnect-generated",
+    "@tanstack-query-firebase/angular": "^1.0.0",
+    "@tanstack/angular-query-experimental": "5.66.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.0",
-    "@tanstack-query-firebase/angular": "^1.0.0",
-    "@tanstack/angular-query-experimental": "5.66.4"
+    "zone.js": "~0.15.0"
   },
   "devDependencies": {
     "@angular/build": "^20.3.10",

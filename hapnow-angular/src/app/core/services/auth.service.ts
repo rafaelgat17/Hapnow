@@ -173,10 +173,13 @@ private manejarError(error: any): string {
     'auth/email-already-in-use': 'Este email ya está registrado',
     'auth/invalid-email': 'Email inválido',
     'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
-    'auth/user-not-found': 'Usuario no encontrado',
-    'auth/wrong-password': 'Contraseña incorrecta',
+    'auth/user-not-found': 'Credenciales incorrectas',
+    'auth/wrong-password': 'Credenciales incorrectas',
+    'auth/invalid-credential': 'Credenciales incorrectas',
+    'auth/invalid-login-credentials': 'Credenciales incorrectas',
     'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde',
-    'auth/network-request-failed': 'Error de conexión'
+    'auth/network-request-failed': 'Error de conexión',
+    'auth/missing-password': 'Debes introducir una contraseña'
     };
     // Mapeo de códigos de error de Firebase a mensajes amigables y legibles para el usuario final.
 

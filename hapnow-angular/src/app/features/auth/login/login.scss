@@ -5,6 +5,12 @@ $border-radius: 12px;
 $border-width: 2px;
 $font-weight-bold: 700;
 
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(to top, #00332B 0%, #1a1a1a 30%, #1a1a1a 100%);
+}
+
 label, h1, p {
     color: $text-color-light;
 }
@@ -142,6 +148,8 @@ input {
     padding: 15px 2rem;
     margin-top: 1rem;
 }
+
+
 
 @media (max-width: 920px) {
     .main-content {

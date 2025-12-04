@@ -1,9 +1,16 @@
 $primary-color: #00D9A3;
 $background-color: #1A1A1A;
 $text-color-light: white;
+$error-color: red;
 $border-radius: 12px;
 $border-width: 2px;
 $font-weight-bold: 700;
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(to top, #00332B 0%, #1a1a1a 30%, #1a1a1a 100%);
+}
 
 label, h1, p {
     color: $text-color-light;
@@ -90,4 +97,13 @@ input {
     border-radius: $border-radius;
     padding: 15px 3rem;
     margin-top: 1rem;
+}
+
+.error {
+    padding: 2px 7px; 
+    border: 2px solid $error-color;
+    border-radius: $border-radius;
+    color: $error-color;
+    margin-bottom: 1rem;
+    font-size: smaller;
 }

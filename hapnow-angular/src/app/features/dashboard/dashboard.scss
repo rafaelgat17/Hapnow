@@ -1,0 +1,34 @@
+.main-container {
+    display: flex;
+    flex-direction: row;
+    margin: 2rem;
+    gap: 9rem;
+}
+
+.mapa-header {
+    display: flex;
+    flex-direction: row;
+    gap: 6rem;
+}
+
+.eventos-header {
+    display: flex;
+    flex-direction: row;
+    gap: 6rem;
+}
+
+.h2-section {
+    color: #00D9A3;
+}
+
+.iconos-section {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
