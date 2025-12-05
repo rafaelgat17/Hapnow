@@ -65,6 +65,7 @@
   <div class="eventos-section">
     <header class="eventos-header">
       <h2 class="h2-section">Eventos para ti</h2>
+    </header>
 
       <div class="botones-eventos"> 
 
@@ -87,10 +88,37 @@
       </div>
 
       <div class="eventos-scroll">
+        <div *ngIf="cargandoEventos" class="loading">
+          <p>Cargando Eventos...</p>
+        </div>
 
+        <div *ngIf="!cargandoEventos && eventos.length === 0" class="sin-eventos">
+          <p>No hay eventos disponibles</p>
+        </div>
+
+        <div *ngIf="!cargandoEventos && eventos.length > 0" class="eventos-grid">
+          <div *ngFor="let evento of eventos" class="evento-card">
+            <span class="evento-categoria" [class]="evento.categoria">
+              {{ evento.categoria }}
+            </span>
+
+            <h3 class="evento-titulo">{{ evento.titulo }}</h3>
+
+            <div class="evento-meta">
+              <span>{{ evento.ubicacion.ciudad }}</span>
+              <span *ngIf="evento.maxParticipantes">{{ evento.maxParticipantes }}</span>
+            </div>
+
+            <p class="evento-desc">
+              {{ evento.descripcion.length > 80 ? (evento.descripcion | slice:0:80) + '...' : evento.descripcion }}
+            </p>
+
+            <button>Ver detalles</button>
+          </div>
+
+        </div>
       </div>
 
-    </header>
   </div>
 
 </div>

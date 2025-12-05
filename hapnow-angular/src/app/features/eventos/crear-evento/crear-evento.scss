@@ -1,0 +1,81 @@
+$primary-color: #00D9A3;
+$background-color: #1A1A1A;
+$text-color-light: white;
+$error-color: red;
+$border-radius: 12px;
+$border-width: 2px;
+$font-weight-bold: 700;
+
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(to top, #00332B 0%, #1a1a1a 30%, #1a1a1a 100%);
+}
+
+.crear-evento-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: $border-radius;
+    border: $border-width solid $primary-color;
+    background-color: $background-color;
+    padding: 2rem;
+    text-align: center;
+    padding: 50px 3rem; 
+    width: 90%; 
+    max-width: 300px;
+    margin: 0 auto;
+    margin-top: 4rem;
+}
+
+.evento-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+
+.form-subform {
+    border-radius: $border-radius;
+    border: $border-width solid $primary-color;
+    background-color: $background-color;
+    padding: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+button {
+    font-size: 16px;
+    font-weight: $font-weight-bold;
+    background-color: $primary-color;
+    border-style: none;
+    color: $background-color;
+    border-radius: $border-radius;
+    padding: 15px 2rem;
+}
+
+input, textarea, select {
+    margin-bottom: 1rem;
+    background-color: $background-color;
+    color: $primary-color;
+    border: $border-width solid $primary-color;
+    border-radius: $border-radius;
+    padding: 11px 21px; 
+}
+
+h1 {
+    color: $primary-color;
+}
+
+label {
+    color: $text-color-light;
+}
+
+label {
+    text-align: left;
+}

@@ -1,1 +1,75 @@
-<p>crear-evento works!</p>
+<app-navbar></app-navbar>
+
+<div class="crear-evento-container">
+
+    <header class="crear-evento-header">
+        <h1>Crear Evento</h1>
+    </header>
+
+    <div *ngIf="mensajeError" class="error-mensaje">
+        {{ mensajeError }}
+    </div>
+
+    <form [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" class="evento-form">
+
+
+        <div class="form-group">
+            <label for="">Titulo del evento</label>
+            <input type="text" id="titulo" formControlName="titulo" placeholder="Titulo...">
+        </div>
+
+        <div class="form-group">
+            <label for="">Descripción del evento</label>
+            <textarea rows="4" id="nombre" formControlName="descripcion" placeholder="Añade una descripción al evento..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="">Categoría</label>
+            <select id="categoria" formControlName="categoria">
+                <option value="">Selecciona una categoria</option>
+                <option *ngFor="let cat of categorias" [value]="cat.valor">
+                    {{ cat.nombre }}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-subform">
+            <div class="form-group">
+                <label for="">Ciudad</label>
+                <input type="text" id="ciudad" formControlName="ciudad" placeholder="Ej: Sevilla">
+            </div>
+
+            <div class="form-group">
+                <label for="">Direccion</label>
+                <input type="text" id="direccion" formControlName="direccion">
+            </div>
+        </div>
+
+        <div class="form-subform">
+            <div class="form-group">
+                <label for="">Fecha</label>
+                <input type="date" id="fecha" formControlName="fecha">
+            </div>
+
+            <div class="form-group">
+                <label for="">Hora</label>
+                <input type="time" id="hora" formControlName="hora">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="">Limite de participantes (*opcional)</label>
+            <input type="number" id="maxParticipantes" min="2" max="100">
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" [disabled]="cargando">
+                {{ cargando ? 'Creando...' : 'Crear Evento' }}
+            </button>
+        </div>
+
+    </form>
+
+    <button (click)="cancelar()" class="boton-cancelar">Volver</button>
+
+</div>

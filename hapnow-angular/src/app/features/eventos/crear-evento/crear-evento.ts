@@ -7,10 +7,11 @@ import { Router } from '@angular/router';
 import { EventoService } from '../../../core/services/evento.service';
 import { CrearEventoData } from '../../../shared/models/evento.model';
 import { settings } from '@angular/fire/analytics';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-crear-evento',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent],
   templateUrl: './crear-evento.html',
   styleUrl: './crear-evento.scss',
 })
