@@ -1,3 +1,10 @@
+$background-color: #1A1A1A;
+$text-color-light: white;
+$text-color-subtle: #b8b8b8;
+$breakpoint-mobile: 768px;
+$breakpoint-tablet-min: 481px;
+
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -6,156 +13,119 @@
     width: 100%;
     align-items: center;
     gap: 0.5rem;
-    background-color: #1a1a1a;
+    background-color: $background-color;
     padding: 20px 15px;
 }
 
-.container-1 {
+.main-container .container-1 {
     display: flex;
     flex-direction: row;
     gap: 9rem;
 }
 
-.container-2 {
+.main-container .container-2 {
     display: flex;
     flex-direction: row;
     gap: 3rem;
 }
 
-.container-3 {
+.main-container .container-3 {
     display: flex;
     flex-direction: row;
     gap: 3rem;
 }
 
 
-.p-title {
-    color: white;
+.main-container .p-title {
+    color: $text-color-light;
     font-size: 14px;
 }
 
-p {
-    color: #b8b8b8;
+.main-container p {
+    color: $text-color-subtle;
     font-size: 14px;
 }
 
-small {
-    color: #b8b8b8;
+.main-container small {
+    color: $text-color-subtle;
 }
 
-
-
-/* Media queries para móviles */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: $breakpoint-mobile) {
     .main-container {
-        position: relative; /* Cambiado de fixed a relative para móvil */
+        position: relative;
         padding: 30px 20px;
         gap: 2rem;
     }
     
-    .container-1 {
+    .main-container .container-1 {
         flex-direction: column;
         gap: 2rem;
         width: 100%;
     }
     
-    .subcontainer-1,
-    .subcontainer-2,
-    .subcontainer-3,
-    .subcontainer-4 {
+    .main-container .container-1 .subcontainer-1, 
+    .main-container .container-1 .subcontainer-2, 
+    .main-container .container-1 .subcontainer-3, 
+    .main-container .container-1 .subcontainer-4 {
         width: 100%;
     }
     
-    .p-title {
+    .main-container .p-title {
         font-size: 16px;
         margin-bottom: 0.5rem;
     }
     
-    .container-1 p:not(.p-title) {
+    .main-container .container-1 p:not(.p-title) {
         font-size: 14px;
         margin: 0.3rem 0;
     }
     
-    .container-2 {
+    .main-container .container-2 {
         gap: 2rem;
         margin-top: 1rem;
     }
     
-    .container-2 svg {
+    .main-container .container-2 svg {
         width: 28px;
         height: 28px;
     }
     
-    .container-3 {
+    .main-container .container-3 {
         flex-direction: column;
         gap: 0.8rem;
         text-align: center;
         width: 100%;
     }
     
-    .container-3 p {
+    .main-container .container-3 p {
         font-size: 12px;
         margin: 0;
     }
     
-    .container-4 {
+    .main-container .container-4 {
         text-align: center;
         width: 100%;
     }
     
-    .container-4 small {
+    .main-container .container-4 small {
         font-size: 12px;
     }
 }
 
-/* Media query para móviles muy pequeños */
-@media screen and (max-width: 480px) {
-    .main-container {
-        padding: 25px 15px;
-        gap: 1.5rem;
-    }
-    
-    .container-1 {
-        gap: 1.5rem;
-    }
-    
-    .container-2 {
-        gap: 1.5rem;
-    }
-    
-    .container-2 svg {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .container-3 {
-        gap: 0.6rem;
-    }
-    
-    .container-3 p {
-        font-size: 11px;
-    }
-    
-    .container-4 small {
-        font-size: 11px;
-    }
-}
-
-/* Media query para tablets en modo vertical */
-@media screen and (min-width: 481px) and (max-width: 768px) {
-    .container-1 {
+@media screen and (min-width: $breakpoint-tablet-min) and (max-width: $breakpoint-mobile) {
+    .main-container .container-1 {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
     }
     
-    .container-3 {
+    .main-container .container-3 {
         flex-wrap: wrap;
         justify-content: center;
         gap: 1.5rem;
     }
     
-    .container-3 p {
+    .main-container .container-3 p {
         font-size: 13px;
     }
 }

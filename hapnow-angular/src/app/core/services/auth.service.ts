@@ -1,6 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
-// inject: Función moderna de Angular para inyectar dependencias.
-// signal: Función de Angular para crear un estado reactivo que notifica a la UI sobre cambios.
+// iinject se usa para inyectar dependencias
+// signal es una funcion de angular para crear un estado reactivo que cambia segun la informacion que haya en el input
 import { Router } from '@angular/router';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, User } from '@angular/fire/auth';
 // Importa funciones específicas del SDK modular de Firebase Auth para crear, loguear, desloguear y escuchar el estado.

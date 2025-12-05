@@ -1,78 +1,116 @@
+$background-color: #1A1A1A;
+$primary-color: #00D9A3;
+$text-color-light: white;
+$border-radius: 12px;
+$border-width: 2px;
+$breakpoint-mobile: 768px;
+
+
 .navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1A1A1A;
-    border-bottom: 2px solid #00D9A3;
+    background-color: $background-color;
+    border-bottom: $border-width solid $primary-color;
     padding: 15px 20px;
     height: 50px;
 }
 
-.div-svg {
+.navbar-container .div-svg {
     max-width: 150px; 
     height: auto;
 }
 
-
-.right-container {
+.navbar-container .right-container {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 13px;
 }
 
-.search-container {
+.navbar-container .right-container .search-container {
     display: flex;
     align-items: center;
-    background-color: #1A1A1A;
-    border-radius: 12px;
-    border: 2px solid #00D9A3;
+    background-color: $background-color;
+    border-radius: $border-radius;
+    border: $border-width solid $primary-color;
     padding: 5px 15px;
 }
 
-.search-input {
+.navbar-container .right-container .search-container .search-input {
     border: none;
     background: none;
-    color: white;
+    color: $text-color-light;
     padding: 5px;
     outline: none;
     width: 200px;
     font-style: italic;
 }
 
-.search-icon {
+.navbar-container .right-container .search-container .search-icon {
     cursor: pointer;
-    color: #00D9A3;
+    color: $primary-color;
     padding-left: 10px;
 }
 
-.icon-container {
+.navbar-container .right-container .icon-container {
     display: flex;
     align-items: center;
     gap: 20px;
+
+    button {
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        outline: none;
+        cursor: pointer;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+
+    button:hover {
+        color: $primary-color;
+    }
 }
 
-.lupa {
+.navbar-container .right-container .lupa {
     display: none;
+    
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    cursor: pointer;
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    
+    svg {
+        transition: fill 0.2s;
+    }
 }
 
-@media (max-width: 768px) {
+
+@media (max-width: $breakpoint-mobile) {
 
     .navbar-container {
         height: 45px;
         padding: 10px 15px;
     }
     
-    .div-svg {
+    .navbar-container .div-svg {
         max-width: 120px;
     }
 
-    .search-container {
+    .navbar-container .right-container .search-container {
         display: none; 
     }
 
-    .lupa {
+    .navbar-container .right-container .lupa {
         display: block;
     }
-
 }
