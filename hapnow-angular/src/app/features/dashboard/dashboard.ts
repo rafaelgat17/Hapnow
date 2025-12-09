@@ -35,4 +35,5 @@ export class DashboardComponent {
   get usuario() {
     return this.authService.usuarioActual();
   }
+
 }

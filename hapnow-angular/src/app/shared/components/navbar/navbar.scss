@@ -85,9 +85,6 @@ $breakpoint-mobile: 768px;
     margin: 0;
     outline: none;
     cursor: pointer;
-    display: flex; 
-    align-items: center;
-    justify-content: center;
     
     svg {
         transition: fill 0.2s;
@@ -111,6 +108,8 @@ $breakpoint-mobile: 768px;
     }
 
     .navbar-container .right-container .lupa {
-        display: block;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
     }
 }

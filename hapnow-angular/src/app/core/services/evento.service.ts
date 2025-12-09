@@ -49,6 +49,7 @@ export class EventoService {
         },
         fecha: datos.fecha,
         hora: datos.hora,
+        participantes: [usuario.uid],
         maxParticipantes: datos.maxParticipantes,
 
         // aqui van los datos del sistema, los no introducidos

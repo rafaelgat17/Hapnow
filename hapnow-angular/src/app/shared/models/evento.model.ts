@@ -9,6 +9,7 @@ export interface Evento {
   };
   fecha: Date;
   hora: string;
+  participantes: string[];
   maxParticipantes?: number;
 
   // estos campos son datos del sistema, no se introducen por parte del usuario

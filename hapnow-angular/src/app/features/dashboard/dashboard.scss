@@ -1,3 +1,17 @@
+$primary-color: #00D9A3;
+$background-color: #1A1A1A;
+$text-color-light: white;
+$error-color: red;
+$border-radius: 12px;
+$border-width: 2px;
+$font-weight-bold: 700;
+
+$color-deportes: #FF6B6B;
+$color-ocio: #4ECDC4;
+$color-estudio: #95E1D3;
+$color-cultural: #C7A2FF;
+$color-profesional: #FFB347;
+
 .main-container {
     display: flex;
     flex-direction: row;
@@ -9,13 +23,24 @@
 .mapa-header {
     display: flex;
     flex-direction: row;
+    justify-content:space-between;
     gap: 6rem;
+    padding: 20px 24px;
+    border-bottom: 1px solid $primary-color;
 }
 
 .eventos-header {
     display: flex;
     flex-direction: row;
-    gap: 6rem;
+    justify-content: space-between;
+    // gap: 6rem;
+}
+
+.evento-participantes {
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    gap: 0.5rem;
 }
 
 .h2-section {
@@ -28,8 +53,94 @@
     gap: 0.5rem;
 }
 
+
+
+
+.evento-card {
+    padding: 10px;
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+span {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    text-align: center;
+}
+
 button {
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.detalles-button {
+    font-size: 16px;
+    font-weight: $font-weight-bold;
+    background-color: $primary-color;
+    border-style: none;
+    color: $background-color;
+    border-radius: $border-radius;
+    padding: 10px 2rem;
+}
+
+.categoria-deportes {
+    border: $border-width solid $color-deportes;
+}
+
+.categoria-ocio {
+    border: $border-width solid $color-ocio;
+}
+
+.categoria-estudio {
+    border: $border-width solid $color-estudio;
+}
+
+.categoria-cultural {
+    border: $border-width solid $color-cultural;
+}
+
+.categoria-profesional {
+    border: $border-width solid $color-profesional;
+}
+
+.main-container {
+  display: flex;
+  height: calc(100vh - 70px); // 70px = navbar (ajusta según tu navbar)
+  gap: 0;
+}
+
+// MAPA (60%)
+.mapa-section {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+
+
+// EVENTOS (40%)
+.eventos-section {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; // Importante
+  border-left: 1px solid $primary-color;
+}
+
+.eventos-header {
+  flex-shrink: 0; // No se encoge
+  padding: 20px 24px;
+  border-bottom: 1px solid $primary-color;
+}
+
+.eventos-scroll {
+  flex: 1; // Ocupa espacio restante
+  overflow-y: auto; // Scroll vertical
+  overflow-x: hidden;
+  padding: 16px;
 }
