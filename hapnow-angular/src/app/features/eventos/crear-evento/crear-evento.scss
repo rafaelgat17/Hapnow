@@ -79,3 +79,78 @@ label {
 label {
     text-align: left;
 }
+
+
+
+
+
+$dropdown-bg: #2d2d2d;       
+$dropdown-border: #3d3d3d;   
+$dropdown-hover-bg: #3d3d3d;
+
+.autocomplete {
+    // 💡 CLAVE: Necesario para posicionar el dropdown correctamente.
+    position: relative;
+    // Opcional: Asegura que la lista se muestre sobre cualquier cosa que el padre pueda estar usando (como overflow: hidden).
+    // overflow: visible; 
+}
+
+// ---------------------------------------------------------------------
+// 2. Estilos del Dropdown (La caja flotante)
+// ---------------------------------------------------------------------
+
+.autocomplete-dropdown {
+    // Posicionamiento
+    position: absolute;
+    top: 100%; // Posiciona justo debajo del borde inferior del input.
+    left: 0;   // Alinea al borde izquierdo del input.
+    width: 100%; // Ocupa el mismo ancho que el input.
+    z-index: 1000; // Asegura que esté por encima de otros elementos del formulario.
+    
+    // Dimensiones y Scroll
+    max-height: 200px;
+    overflow-y: auto; // Permite desplazamiento si hay muchos resultados.
+
+    // Estilos visuales
+    background: $background-color;
+    border: 1px solid $primary-color;
+    border-radius: $border-radius / 2; // Radio más pequeño para el dropdown
+    margin-top: 4px; // Pequeño espacio entre el input y el dropdown
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
+    
+    // Opcional: Para mejorar el scroll en navegadores Webkit (Chrome/Safari)
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $dropdown-hover-bg;
+        border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}
+
+// ---------------------------------------------------------------------
+// 3. Estilos de los Items Individuales (Las sugerencias)
+// ---------------------------------------------------------------------
+
+.autocomplete-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    color: $text-color-light; // Texto blanco
+    font-size: 14px;
+    transition: background 0.2s; // Suaviza la transición al pasar el ratón
+
+    // Estado hover
+    &:hover {
+        background: $dropdown-hover-bg; 
+        // Opcional: Podrías usar el color primario para un efecto más llamativo
+        // color: $primary-color; 
+    }
+
+    // Separadores
+    &:not(:last-child) {
+        border-bottom: 1px solid $dropdown-border;
+    }
+}

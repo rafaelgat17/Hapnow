@@ -26,7 +26,7 @@ $color-profesional: #FFB347;
     justify-content:space-between;
     gap: 6rem;
     padding: 20px 24px;
-    border-bottom: 1px solid $primary-color;
+    border-bottom: 2px solid $primary-color;
 }
 
 .eventos-header {
@@ -107,40 +107,43 @@ button {
     border: $border-width solid $color-profesional;
 }
 
+
+
+
 .main-container {
-  display: flex;
-  height: calc(100vh - 70px); // 70px = navbar (ajusta según tu navbar)
-  gap: 0;
+    display: flex;
+    height: calc(100vh - 70px); // 70px = navbar (ajusta según tu navbar)
+    gap: 0;
 }
 
 // MAPA (60%)
 .mapa-section {
-  flex: 0 0 50%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 
 
 // EVENTOS (40%)
 .eventos-section {
-  flex: 0 0 50%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; // Importante
-  border-left: 1px solid $primary-color;
+    flex: 0 0 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; // Importante
+    border-left: 2px solid $primary-color;
 }
 
 .eventos-header {
-  flex-shrink: 0; // No se encoge
-  padding: 20px 24px;
-  border-bottom: 1px solid $primary-color;
+    flex-shrink: 0; // No se encoge
+    padding: 20px 24px;
+    border-bottom: 2px solid $primary-color;
 }
 
 .eventos-scroll {
-  flex: 1; // Ocupa espacio restante
-  overflow-y: auto; // Scroll vertical
-  overflow-x: hidden;
-  padding: 16px;
+    flex: 1; // Ocupa espacio restante
+    overflow-y: auto; // Scroll vertical
+    overflow-x: hidden;
+    padding: 16px;
 }

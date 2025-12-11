@@ -12,6 +12,7 @@ export const routes: Routes = [
     // canActivate: [authGuard]: Este es el punto de seguridad. Antes de cargar el componente,
     // Angular ejecuta la función 'authGuard'. Si el guard devuelve 'false',
     // la navegación se bloquea y se ejecuta la lógica de redirección del guard (generalmente a /login).
-    { path: 'crear-evento', loadComponent: () => import('./features/eventos/crear-evento/crear-evento').then(m => m.CrearEventoComponent), canActivate: [authGuard] }
+    { path: 'crear-evento', loadComponent: () => import('./features/eventos/crear-evento/crear-evento').then(m => m.CrearEventoComponent), canActivate: [authGuard] },
+    { path: 'evento/:id', loadComponent: () => import('./features/eventos/detalle-evento/detalle-evento').then(m => m.DetalleEventoComponent), canActivate: [authGuard] }
 ];
 

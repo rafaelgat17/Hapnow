@@ -1,5 +1,5 @@
 import { Inject, Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, getDocs, query, where, orderBy } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, addDoc, getDocs, query, where, orderBy } from '@angular/fire/firestore';
 // estas son las funciones para interactuar con los datos
 import { AuthService } from './auth.service';
 import { Evento, CrearEventoData } from '../../shared/models/evento.model';
@@ -121,6 +121,32 @@ export class EventoService {
       console.error('Hay un error al obtener el evneto', error);
       return [];
       
+    }
+  }
+
+  async obtenerEventoPorId(id: string): Promise<Evento | null> {
+  
+    const docRef = doc(this.firestore, 'eventos', id);
+
+    // se obtiene la referencia con doc(), en este caso para saber los id de los eventos
+
+    const docSnap = await getDoc(docRef);
+
+    // se usa getDoc() para obtener el documento resultante despues de usar doc()
+
+
+    // si existe el documento, devuelve los datos del evento concreto
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      // estos son los datos completos del documento
+
+      return {
+        id: docSnap.id,
+        ...data
+      } as Evento;
+
+    } else {
+      return null;
     }
   }
 

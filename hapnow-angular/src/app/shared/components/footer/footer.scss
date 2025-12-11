@@ -1,3 +1,4 @@
+$primary-color: #00D9A3;
 $background-color: #1A1A1A;
 $text-color-light: white;
 $text-color-subtle: #b8b8b8;
@@ -15,6 +16,7 @@ $breakpoint-tablet-min: 481px;
     gap: 0.5rem;
     background-color: $background-color;
     padding: 20px 15px;
+    border-top: 2px solid $primary-color;
 }
 
 .main-container .container-1 {

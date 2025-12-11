@@ -33,17 +33,31 @@
             </select>
         </div>
 
-        <div class="form-subform">
-            <div class="form-group">
-                <label for="">Ciudad</label>
-                <input type="text" id="ciudad" formControlName="ciudad" placeholder="Ej: Sevilla">
-            </div>
-
-            <div class="form-group">
-                <label for="">Direccion</label>
-                <input type="text" id="direccion" formControlName="direccion">
+<div class="form-subform">
+    <div class="form-group autocomplete"> 
+        <label for="ciudad">Ciudad</label>
+        <input type="text" id="ciudad" formControlName="ciudad" (input)="onCiudadInput($event)" (focus)="mostrarSugerenciasCiudades = true" placeholder="Ej: Sevilla">
+        
+        <div *ngIf="mostrarSugerenciasCiudades && sugerenciasCiudades.length > 0" class="autocomplete-dropdown">
+            <div *ngFor="let sugerencia of sugerenciasCiudades" class="autocomplete-item" (click)="seleccionarCiudad(sugerencia); $event.stopPropagation()">
+                {{ sugerencia.nombre }}
             </div>
         </div>
+        
+    </div>
+    
+    <div class="form-group autocomplete">
+        <label for="direccion">Direccion</label>
+        <input type="text" id="direccion" formControlName="direccion" (input)="onDireccionInput($event)" (focus)="mostrarSugerenciasDirecciones = true" placeholder="Ej: Calle Cuna, 1">
+        
+        <div *ngIf="mostrarSugerenciasDirecciones && sugerenciasDirecciones.length > 0" class="autocomplete-dropdown">
+            <div *ngFor="let sugerencia of sugerenciasDirecciones" class="autocomplete-item" (click)="seleccionarDireccion(sugerencia); $event.stopPropagation()">
+                {{ sugerencia.nombre }}
+            </div>
+        </div>
+    </div>
+</div>
+
 
         <div class="form-subform">
             <div class="form-group">
@@ -54,6 +68,13 @@
             <div class="form-group">
                 <label for="">Hora</label>
                 <input type="time" id="hora" formControlName="hora">
+
+                <div *ngIf="formularioEvento.get('hora')?.errors?.['pasado']" class="error">
+                    La hora no puede ser en el pasado
+                </div>
+                <div *ngIf="formularioEvento.get('hora')?.errors?.['futuroLejano']" class="error">
+                    El evento debe ser en las próximas 12 horas
+                </div>
             </div>
         </div>
 
@@ -72,4 +93,3 @@
 
     <button (click)="cancelar()" class="boton-cancelar">Volver</button>
 
-</div>

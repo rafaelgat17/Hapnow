@@ -168,7 +168,7 @@
               {{ evento.descripcion.length > 80 ? (evento.descripcion | slice:0:80) + '...' : evento.descripcion }}
             </p>
 
-            <button class="detalles-button">Ver detalles</button>
+            <button class="detalles-button" [routerLink]="['/evento', evento.id]">Ver detalles</button>
           </div>
 
         </div>
