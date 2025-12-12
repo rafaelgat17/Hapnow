@@ -114,7 +114,7 @@ $dropdown-hover-bg: #3d3d3d;
     // Estilos visuales
     background: $background-color;
     border: 1px solid $primary-color;
-    border-radius: $border-radius / 2; // Radio más pequeño para el dropdown
+    border-radius: calc($border-radius / 2); // Radio más pequeño para el dropdown
     margin-top: 4px; // Pequeño espacio entre el input y el dropdown
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); 
     

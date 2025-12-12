@@ -1,6 +1,7 @@
 $primary-color: #00D9A3;
 $background-color: #1A1A1A;
 $text-color-light: white;
+$error-color: red;
 $border-radius: 12px;
 $border-width: 2px;
 $font-weight-bold: 700;
@@ -149,6 +150,15 @@ input {
     margin-top: 1rem;
 }
 
+
+.error-mensaje {
+    padding: 2px 7px; 
+    border: 2px solid $error-color;
+    border-radius: $border-radius;
+    color: $error-color;
+    margin-bottom: 1rem;
+    font-size: smaller;
+}
 
 
 @media (max-width: 920px) {
