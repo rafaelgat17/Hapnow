@@ -1,32 +1,23 @@
-// Define la forma (interfaz) que tendrá un objeto de Usuario completo en la base de datos (Firestore).
-// Es el contrato que garantiza la consistencia de los datos.
+// Define la forma del interaz que tendra un objeto usuario en la base de datos de Firestore
 export interface Usuario {
-    uid: string;
-    // Identificador Único Universal (Unique ID) asignado por Firebase Auth. Es la clave primaria en Firestore.
-    email: string;
-    // Correo electrónico del usuario (también usado por Firebase Auth).
-    nombre: string;
-    // Nombre visible del usuario.
-    fotoPerfil?: string;
-    // Campo opcional (por el signo '?'). Guardará la URL de la imagen en Firebase Storage.
+    uid: string;
+    // Identificador Único Universal (Unique ID) asignado por Firebase Auth. Es la clave primaria en Firestore
+    email: string;
+    // Correo electrónico del usuario (también usado por Firebase Auth)
+    nombre: string;
+    fotoPerfil?: string;
+    // Guardará la URL de la imagen en Firebase Storage
     biografia?: string;
-    // Campo opcional de texto libre.
     intereses?: string[];
-    // Campo opcional. Un array de strings para guardar los intereses del usuario (ej. ['música', 'deporte']).
     reputacion: number;
-    // Campo numérico para métricas de la app.
     eventosCreados: number;
-    // Campo numérico para métricas de la app.
     eventosAsistidos: number;
-    // Campo numérico para métricas de la app.
     rol: 'usuario' | 'admin';
-    // Campo de tipo restringido (union type). Solo puede tomar uno de esos dos valores.
+    // solo puede tomar uno de esos dos valores
     fechaRegistro: Date;
-    // Tipo Date. Es importante que sea un objeto Date para que Firebase Firestore lo guarde correctamente como Timestamp.
 }
 
-// Define la estructura de datos que se recibe del formulario de Registro.
-// Contiene solo la información necesaria para crear la cuenta de Auth y el perfil inicial.
+// Define la estructura de datos del registro
 export interface RegistroData {
     email: string;
     password: string;
@@ -34,8 +25,7 @@ export interface RegistroData {
     nombre: string;
 }
 
-// Define la estructura de datos que se recibe del formulario de Login.
-// Contiene solo lo necesario para autenticar la sesión.
+// Define la estructura de datos del login
 export interface LoginData {
     email: string;
     password: string;

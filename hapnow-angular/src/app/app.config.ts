@@ -20,10 +20,10 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 // provideAuth registra el servicio de Autenticación de Firebase
 // getAuth es una función para obtener la instancia del servicio de autenticación
 import { provideStorage, getStorage } from '@angular/fire/storage';
-// provideStorage: Registra el servicio de Almacenamiento (manejo de archivos, imágenes).
+// provideStorage: Registra el servicio de Almacenamiento (manejo de archivos, imágenes)
 // getStorage: Función para obtener la instancia del servicio de almacenamiento.
 import { provideMessaging, getMessaging } from '@angular/fire/messaging';
-// provideMessaging: Registra el servicio de Mensajería (Notificaciones Push, FCM).
+// provideMessaging: Registra el servicio de Mensajería (Notificaciones Push, FCM)
 // getMessaging: Función para obtener la instancia del servicio de mensajería.
 
 import { firebaseConfig } from './firebase-config';

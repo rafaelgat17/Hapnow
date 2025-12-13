@@ -11,10 +11,11 @@ export interface Evento {
   hora: string;
   participantes: string[];
   maxParticipantes?: number;
+  creadorNombre: string;
 
   // estos campos son datos del sistema, no se introducen por parte del usuario
+  // pero igualmente se mostraran en el registro de la firestore
   creadorId: string;
-  creadorNombre: string;
   estado: 'activo' | 'cancelado' | 'finalizado';
   fechaCreacion: Date;
 }
