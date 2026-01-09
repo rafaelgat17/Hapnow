@@ -1,10 +1,10 @@
-$primary-color: #00D9A3;
+$color-primario: #00D9A3;
 $background-color: #1A1A1A;
-$text-color-light: white;
-$error-color: red;
+$color-claro: white;
+$color-error: red;
 $border-radius: 12px;
 $border-width: 2px;
-$font-weight-bold: 700;
+$tamano-movil: 768px;
 
 $color-deportes: #FF6B6B;
 $color-ocio: #4ECDC4;
@@ -26,14 +26,17 @@ $color-profesional: #FFB347;
     justify-content:space-between;
     gap: 6rem;
     padding: 20px 24px;
-    border-bottom: 2px solid $primary-color;
+    border-bottom: 2px solid $color-primario;
 }
 
 .eventos-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    // gap: 6rem;
+}
+
+.cargando {
+    color: $color-claro;
 }
 
 .evento-participantes {
@@ -44,22 +47,27 @@ $color-profesional: #FFB347;
 }
 
 .h2-section {
-    color: #00D9A3;
+    color: $color-primario;
 }
 
 .iconos-section {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 0.5rem;
 }
 
+
+.sin-eventos {
+    color: white;
+}
 
 
 
 .evento-card {
     padding: 10px;
     border-radius: 12px;
-    color: white;
+    color: $color-claro;
     margin-bottom: 1rem;
     margin-top: 1rem;
 }
@@ -79,8 +87,8 @@ button {
 
 .detalles-button {
     font-size: 16px;
-    font-weight: $font-weight-bold;
-    background-color: $primary-color;
+    font-weight: 700;
+    background-color: $color-primario;
     border-style: none;
     color: $background-color;
     border-radius: $border-radius;
@@ -108,15 +116,12 @@ button {
 }
 
 
-
-
 .main-container {
     display: flex;
-    height: calc(100vh - 70px); // 70px = navbar (ajusta según tu navbar)
+    height: calc(100vh - 70px);
     gap: 0;
 }
 
-// MAPA (60%)
 .mapa-section {
     flex: 0 0 50%;
     display: flex;
@@ -126,24 +131,103 @@ button {
 
 
 
-// EVENTOS (40%)
 .eventos-section {
     flex: 0 0 50%;
     display: flex;
     flex-direction: column;
-    overflow: hidden; // Importante
-    border-left: 2px solid $primary-color;
+    overflow: hidden;
+    border-left: 2px solid $color-primario;
 }
 
 .eventos-header {
-    flex-shrink: 0; // No se encoge
+    flex-shrink: 0;
     padding: 20px 24px;
-    border-bottom: 2px solid $primary-color;
+    border-bottom: 2px solid $color-primario;
 }
 
 .eventos-scroll {
-    flex: 1; // Ocupa espacio restante
-    overflow-y: auto; // Scroll vertical
+    flex: 1;
+    overflow-y: auto;
     overflow-x: hidden;
     padding: 16px;
+}
+
+.card-botones {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+
+.filtros-adicionales {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filtros-adicionales span {
+    color: $color-primario;
+    font-weight: bold;
+}
+
+.filtros-adicionales input {
+    transform: scale(2);
+}
+
+
+.mapa-container {
+    height: 600px; 
+    width: 100%;
+    border: 2px solid $color-primario;
+}
+
+.mapa-section {
+    flex-grow: 1;
+    min-height: 600px;
+}
+
+@media (max-width: $tamano-movil) {
+    .main-container {
+        flex-direction: column;
+        gap: 0;
+        margin: 0;
+    }
+
+    .mapa-section {
+        flex: 0 0 auto;
+        border-bottom: 2px solid $color-primario;
+        border-right: none;
+        min-height: auto;
+    }
+
+    .mapa-header h2 {
+        display: none;
+    }
+
+    .eventos-section {
+        flex: 0 0 auto;
+        border-left: none;
+    }
+
+    .eventos-header {
+        padding: 10px 16px;
+    }
+
+    .eventos-header h2 {
+        display: none;
+    }
+
+    .botones-eventos svg {
+        height: 48px;
+        width: auto;
+    }
+
+    .evento-desc {
+        display: none;
+    }
+
+    .mapa-container {
+        height: 400px;
+    }
 }

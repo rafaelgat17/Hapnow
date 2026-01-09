@@ -2,21 +2,23 @@ import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
+// CanActivateFn es una funcion que decide si se puede o no acceder a una ruta, devuevle un booleano
 export const authGuard: CanActivateFn = (route, state) => {
-    // Exporta la función 'authGuard' que el Router de Angular ejecutará antes de activar la ruta.
-    // CanActivateFn decide si se puede o no acceder a una ruta
+    // usamos inject para obtener el servicio de autenticación y el router
     const authService = inject(AuthService);
-    // Pide acceso al servicio de autenticacion y comprueba si alguien esta logeado
     const router = inject(Router);
 
+    // se consulta la funcion isAuthenticated del servicio (que devuelve un booleano) si hay o no un usuario guardado
+    // en usuario actual
     if (authService.isAuthenticated()) {
-        // Llamada al AuthService. Pregunta: "¿El usuarioActual (la Signal) es diferente de null?"
+        // si sale true, (hay un usuario guardado, no es nulo), redirige a la pagina deseada que se 
+        // especifique en el archivo de rutas
         return true;
-        // Si authService.isAuthenticated() devuelve true, el Router activa la navegación.
-        // Si esta autenticado, redirige al dashboard (Comentario: En realidad, *permite* seguir la ruta).
     } else {
-        // Si no está autenticado, redirigir a login
+        // si el isAuthenticated del auth.service nos devuelve null significa que no hay ningun usuario
+        // por lo tanto redirige al login y no puede acceder
         router.navigate(['/login']);
         return false;
+        // se para cualquier intento de conexion a la pagina de destino
     }
 };

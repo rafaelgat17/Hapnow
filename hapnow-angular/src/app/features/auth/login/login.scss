@@ -1,7 +1,8 @@
-$primary-color: #00D9A3;
+$color-primario: #00D9A3;
 $background-color: #1A1A1A;
 $text-color-light: white;
 $error-color: red;
+$exito-color: green;
 $border-radius: 12px;
 $border-width: 2px;
 $font-weight-bold: 700;
@@ -21,11 +22,11 @@ label {
 }
 
 h1 {
-    color: $primary-color;
+    color: $color-primario;
 }
 
 a {
-    color: $primary-color;
+    color: $color-primario;
     cursor: pointer;
 }
 
@@ -44,8 +45,8 @@ form {
 input {
     margin-bottom: 1rem;
     background-color: $background-color;
-    color: $primary-color;
-    border: $border-width solid $primary-color;
+    color: $color-primario;
+    border: $border-width solid $color-primario;
     border-radius: $border-radius;
     padding: 11px 21px; 
 }
@@ -55,7 +56,7 @@ input {
     flex-direction: column;
     align-items: center;
     border-radius: $border-radius;
-    border: $border-width solid $primary-color;
+    border: $border-width solid $color-primario;
     padding: 2rem;
     text-align: center;
     width: 90%; 
@@ -69,7 +70,7 @@ input {
     }
 
     .p-login {
-        color: $primary-color;
+        color: $color-primario;
     }
 }
 
@@ -123,8 +124,10 @@ input {
 
 .div-svg {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: center;
+    gap: 1rem;
     margin-bottom: 3rem;
 }
 
@@ -132,7 +135,7 @@ input {
 .boton1 {
     font-size: 16px;
     font-weight: $font-weight-bold;
-    background-color: $primary-color;
+    background-color: $color-primario;
     border-style: none;
     color: $background-color;
     border-radius: $border-radius;
@@ -143,8 +146,8 @@ input {
     font-size: 16px;
     font-weight: $font-weight-bold;
     background-color: $background-color;
-    color: $primary-color;
-    border: $border-width solid $primary-color;
+    color: $color-primario;
+    border: $border-width solid $color-primario;
     border-radius: $border-radius;
     padding: 15px 2rem;
     margin-top: 1rem;
@@ -158,6 +161,19 @@ input {
     color: $error-color;
     margin-bottom: 1rem;
     font-size: smaller;
+}
+
+.exito-mensaje {
+    padding: 2px 7px; 
+    border: 2px solid $exito-color;
+    border-radius: $border-radius;
+    color: $exito-color;
+    margin-bottom: 1rem;
+    font-size: smaller;
+}
+
+.olvido-pass {
+    margin-bottom: 1rem;
 }
 
 

@@ -1,22 +1,37 @@
 $background-color: #1A1A1A;
-$primary-color: #00D9A3;
-$text-color-light: white;
+$color-primario: #00D9A3;
+$color-claro: #fefefe;
 $border-radius: 12px;
 $border-width: 2px;
-$breakpoint-mobile: 768px;
+$tamano-movil: 768px;
 
+p {
+    color: $color-claro;
+}
+
+.perfil-seccion {
+    background-color: $color-primario;
+    border-radius: $border-radius;
+    padding: 0.3rem;
+}
+
+.key {
+    background-color: $color-primario;
+    border-radius: $border-radius;
+    padding: 0.5rem;
+}
 
 .navbar-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: $background-color;
-    border-bottom: $border-width solid $primary-color;
+    border-bottom: $border-width solid $color-primario;
     padding: 15px 20px;
     height: 50px;
 }
 
-.navbar-container .div-svg {
+.navbar-container .div-logo {
     max-width: 150px; 
     height: auto;
 }
@@ -33,23 +48,22 @@ $breakpoint-mobile: 768px;
     align-items: center;
     background-color: $background-color;
     border-radius: $border-radius;
-    border: $border-width solid $primary-color;
+    border: $border-width solid $color-primario;
     padding: 5px 15px;
 }
 
 .navbar-container .right-container .search-container .search-input {
     border: none;
     background: none;
-    color: $text-color-light;
+    color: black;
     padding: 5px;
     outline: none;
     width: 200px;
-    font-style: italic;
 }
 
 .navbar-container .right-container .search-container .search-icon {
     cursor: pointer;
-    color: $primary-color;
+    color: $color-primario;
     padding-left: 10px;
 }
 
@@ -70,36 +84,31 @@ $breakpoint-mobile: 768px;
         justify-content: center;
         transition: color 0.2s;
     }
-
-    button:hover {
-        color: $primary-color;
-    }
 }
 
 .navbar-container .right-container .lupa {
     display: none;
-    
     background: none;
     border: none;
     padding: 0;
     margin: 0;
     outline: none;
     cursor: pointer;
-    
-    svg {
-        transition: fill 0.2s;
-    }
+}
+
+.boton-logout {
+    gap: 0.5rem;
 }
 
 
-@media (max-width: $breakpoint-mobile) {
+@media (max-width: $tamano-movil) {
 
     .navbar-container {
         height: 45px;
         padding: 10px 15px;
     }
     
-    .navbar-container .div-svg {
+    .navbar-container .div-logo {
         max-width: 120px;
     }
 

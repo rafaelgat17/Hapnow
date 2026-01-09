@@ -1,0 +1,101 @@
+$color-primario: #00D9A3;
+$color-fondo: #1A1A1A;
+$color-claro: white;
+$color-error: red;
+$color-subtitulo: #b8b8b8;
+$border-radius: 12px;
+$tamano-movil: 768px;
+
+.admin-dashboard {
+  padding: 20px;
+  max-width: 1700px;
+  margin: auto;
+  background-color: $color-fondo;
+}
+
+.estadisticas-container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  background-color: $color-fondo;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid $color-primario;
+}
+
+.estadistica {
+  flex: 1;
+  background-color: $color-fondo;
+  text-align: center;
+  color: $color-primario;
+}
+
+.reportes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.estadistica h3 {
+  font-size: 2rem;
+  margin: 0;
+  color: $color-claro;
+}
+
+h1, h2 {
+  color: $color-claro;
+}
+
+.reporte-card {
+  border: 2px solid $color-primario;
+  border-radius: $border-radius;
+  padding: 15px;
+  background-color: $color-fondo;
+  color: $color-subtitulo;
+}
+
+.reporte-card {
+  background-color: $color-fondo;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: $border-radius;
+  color: $color-claro;
+}
+
+
+hr {
+  border-color: $color-primario;
+}
+
+.p-reporte {
+  color: $color-claro;
+}
+
+.body {
+  margin-top: 1rem;
+}
+
+
+.acciones {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.acciones button {
+  flex: 1;
+  cursor: pointer;
+  padding: 8px;
+  border: none;
+  border-radius: $border-radius;
+}
+
+.boton-borrar {
+  background-color: $color-primario;
+  color: $color-fondo;
+}
+
+
+.acciones {
+  background-color: darken($color-fondo, 5%);
+}

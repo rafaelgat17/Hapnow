@@ -1,0 +1,115 @@
+$color-primario: #00D9A3;
+$background-color: #1A1A1A;
+$text-color-light: white;
+$border-radius: 12px;
+$border-width: 2px;
+$tamano-movil: 768px;
+
+$color-deportes: #FF6B6B;
+$color-ocio: #4ECDC4;
+$color-estudio: #95E1D3;
+$color-cultural: #C7A2FF;
+$color-profesional: #FFB347;
+
+.eventos-cargados {
+    display: flex;
+    flex-direction: row;
+    border-top: 2px solid $color-primario;
+    margin: 1rem;
+}
+
+.seccion-eventos {
+    margin: 2rem;
+    width: 100%;
+}
+
+.grid-evento {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: flex-start;
+}
+
+.card-evento {
+    border: 4px solid $color-primario;
+    border-radius: $border-radius;
+    flex: 0 1 calc(50% - 1rem);
+    min-width: 280px;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.borde-deportes { 
+    border-color: $color-deportes;
+}
+.borde-ocio { 
+    border-color: $color-ocio;
+}
+.borde-estudio { 
+    border-color: $color-estudio;
+}
+.borde-cultural { 
+    border-color: $color-cultural;
+}
+.borde-profesional { 
+    border-color: $color-profesional;
+}
+
+h1 {
+    margin: 1rem;
+    color: $text-color-light;
+}
+
+hr {
+    border-color: $color-primario;
+}
+
+h2, h3 {
+    color: $text-color-light;
+}
+
+h3 {
+    cursor: pointer;
+}
+
+p {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-color-light;
+}
+
+span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+button {
+    font-size: 16px;
+    font-weight: 700;
+    background-color: $color-primario;
+    border-style: none;
+    color: $background-color;
+    border-radius: $border-radius;
+    padding: 15px 2rem;
+    cursor: pointer;
+}
+
+@media (max-width: $tamano-movil) {
+    .eventos-cargados {
+        flex-direction: column;
+    }
+
+    .seccion-eventos {
+        margin: 1rem;
+    }
+
+    .card-evento {
+        flex: 1 1 100%;
+        margin: 0.5rem 0;
+    }
+}

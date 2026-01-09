@@ -1,9 +1,8 @@
-$primary-color: #00D9A3;
+$color-primario: #00D9A3;
 $background-color: #1A1A1A;
-$text-color-light: white;
-$text-color-subtle: #b8b8b8;
-$breakpoint-mobile: 768px;
-$breakpoint-tablet-min: 481px;
+$color-claro: white;
+$color-subtitulo: #b8b8b8;
+$tamano-movil: 768px;
 
 
 .main-container {
@@ -16,7 +15,7 @@ $breakpoint-tablet-min: 481px;
     gap: 0.5rem;
     background-color: $background-color;
     padding: 20px 15px;
-    border-top: 2px solid $primary-color;
+    border-top: 2px solid $color-primario;
 }
 
 .main-container .container-1 {
@@ -39,20 +38,20 @@ $breakpoint-tablet-min: 481px;
 
 
 .main-container .p-title {
-    color: $text-color-light;
+    color: $color-claro;
     font-size: 14px;
 }
 
 .main-container p {
-    color: $text-color-subtle;
+    color: $color-subtitulo;
     font-size: 14px;
 }
 
 .main-container small {
-    color: $text-color-subtle;
+    color: $color-subtitulo;
 }
 
-@media screen and (max-width: $breakpoint-mobile) {
+@media (max-width: $tamano-movil) {
     .main-container {
         position: relative;
         padding: 30px 20px;
@@ -60,9 +59,9 @@ $breakpoint-tablet-min: 481px;
     }
     
     .main-container .container-1 {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
-        width: 100%;
     }
     
     .main-container .container-1 .subcontainer-1, 
@@ -111,23 +110,5 @@ $breakpoint-tablet-min: 481px;
     
     .main-container .container-4 small {
         font-size: 12px;
-    }
-}
-
-@media screen and (min-width: $breakpoint-tablet-min) and (max-width: $breakpoint-mobile) {
-    .main-container .container-1 {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-    
-    .main-container .container-3 {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1.5rem;
-    }
-    
-    .main-container .container-3 p {
-        font-size: 13px;
     }
 }

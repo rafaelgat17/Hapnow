@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 // inject sirve para inyectar servicios (en este caso evento.service.ts)
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl,Validators, ReactiveFormsModule } from '@angular/forms';
 // reactiveformsmodule para formularios reactivos en el template
 import { Router } from '@angular/router';
 import { EventoService } from '../../../core/services/evento.service';
 import { CrearEventoData } from '../../../shared/models/evento.model';
 import { settings } from '@angular/fire/analytics';
 import { NavbarComponent } from '../../../shared/components/navbar/navbar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-crear-evento',
@@ -17,23 +18,24 @@ import { NavbarComponent } from '../../../shared/components/navbar/navbar';
 })
 export class CrearEventoComponent {
   
-  private fb = inject(FormBuilder);
   private eventoService = inject(EventoService);
   // inyecta el servicio eventoservice para meter la funcion crearEvento() 
 
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   // se usara para redirigir al dashboard una vez se guarde el evento
 
-  
+  esModoEdicion = false;
+  idEnEdicion: string | null = null;
+
+
   formularioEvento: FormGroup;
   cargando = false;
   mensajeError: string | null = null;
 
   // formularioEvento sera la variable que contendra el formulario
   // se inicializa luego en el constructor
-
-  // cargando esta a a true cuando pone creando... y el boton se encontrara deshabilitado
 
   categorias = [
     { valor: 'deportes', nombre: 'Deportes' },
@@ -46,28 +48,81 @@ export class CrearEventoComponent {
   // categorias de los eventos disponibles
 
   constructor() {
-    this.formularioEvento = this.fb.group({
-      titulo: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      descripcion: ['', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]],
-      categoria: ['', [Validators.required]],
-      ciudad: ['', [Validators.required]],
-      direccion: ['', [Validators.required]],
-      fecha: ['', [Validators.required]],
-      hora: ['', [Validators.required]],
-      maxParticipantes: [null]
+    this.formularioEvento = new FormGroup({
+      titulo: new FormControl('', [Validators.required, Validators.minLength(5),  Validators.maxLength(100)]),
+      descripcion: new FormControl('', [Validators.required, Validators.minLength(20), Validators.maxLength(500)]),
+      categoria: new FormControl('', [Validators.required]),
+      ciudad: new FormControl('', [Validators.required]),
+      direccion: new FormControl('', [Validators.required]),
+      fecha: new FormControl('', [Validators.required]),
+      hora: new FormControl('', [Validators.required]),
+      maxParticipantes: new FormControl(null),
     });
+    // hasta que no se crea el formGroup, formularioEvento como tal 
+    // es un contenedor vacio, cuando lo hace establece esa conexion 
+    // con los inputs del html que tienen la propiedad FormControlName
+    console.log(this.formularioEvento.value);
+
+    this.validarHoraMaxima();
   }
+
+
+// CHECKED
+async ngOnInit() {
+  // se mira si en la url hay un ?edit=ID_DEL_EVENTO
+  const eventoId = this.route.snapshot.queryParamMap.get('edit');
+
+  if (eventoId) {
+    this.esModoEdicion = true;
+    // originalmente a false
+    this.idEnEdicion = eventoId;
+    // originalmente null
+    this.cargando = false;
+
+    try {
+      const evento = await this.eventoService.obtenerEventoPorId(eventoId);
+      // aqui se obtiene el evento concreto con sus campos y todo desde la funcion
+      if (evento) {
+        // se rellena el formulario con los datos que tenia el evento
+        this.formularioEvento.patchValue({
+          titulo: evento.titulo,
+          descripcion: evento.descripcion,
+          categoria: evento.categoria,
+          ciudad: evento.ubicacion.ciudad,
+          direccion: evento.ubicacion.direccion,
+          fecha: new Date(evento.fecha).toISOString().split('T')[0],
+          // new Date lo convierte en tipo date
+          // toISOString lo convierte a formato estandar "2026-01-03T15:30:00.000Z"
+          // .split('T'), corta la primera parte a partir de la T y se queda con la fecha sin la hora
+          // porque al mandarlo a firebase como timestamp le pasa la hora tambien
+          hora: evento.hora,
+          maxParticipantes: evento.maxParticipantes
+        });
+      }
+    } catch (error) {
+      this.mensajeError = 'No se pudieron cargar los datos del evento';
+      this.cargando = false;
+    }
+  }
+}
+
+
 
   // se ejecuta una sola vez, que es cuando se crea el formulario
   // crea el formgroup con los controles necesarios
 
+
+  // CHECKED
   async onSubmit(): Promise<void> {
 
-    // async permite usar await porque llamamos a firestore
-    // promise<void> solo ejecuta acciones, no devuelve nada
+    const esHoraValida = this.verificarHoraValida();
+    // es por seguridad simplemente a pesar de que ya se comprueba
+    // si se le da muy rapido al boton
 
-    if (this.formularioEvento.invalid) {
+    if (this.formularioEvento.invalid || !esHoraValida) {
       this.formularioEvento.markAllAsTouched();
+      // esto forzara a que no se envie el formulario
+      this.mensajeError = 'Por favor, rellena o corrige todos los campos';
       return;
     }
 
@@ -78,31 +133,39 @@ export class CrearEventoComponent {
     this.mensajeError = null;
 
     // pone el boton deshabilitado y se desactivan los botones de error
+    // si todos los campos estan bien y rellenos
 
     try {
       const datos: CrearEventoData = {
         // crea una variable de tipo crearEventoData, de evento.model.ts
-        ...this.formularioEvento.value, fecha: new Date(this.formularioEvento.value.fecha)
-
-        // ...this.formularioEvento.value desempaqueta por asi decirlo los campos y valores del objeto
-        // formularioEvento ya elaborado antes con el formGroup y se coge el "valor", que es todo eso
-
-        // posteriormente se sobrescribe la propiedad fecha ya que es string y necesita ser tipo date
+        titulo: this.formularioEvento.value.titulo,
+        descripcion: this.formularioEvento.value.descripcion,
+        categoria: this.formularioEvento.value.categoria,
+        ciudad: this.formularioEvento.value.ciudad,
+        direccion: this.formularioEvento.value.direccion,
+        fecha: new Date(this.formularioEvento.value.fecha),
+        hora: this.formularioEvento.value.hora,
+        maxParticipantes: this.formularioEvento.value.maxParticipantes
       };
-      
 
-      await this.eventoService.crearEvento(datos);
+      // si esta siendo editado un evento...
+      if (this.esModoEdicion && this.idEnEdicion) {
+        await this.eventoService.actualizarEvento(this.idEnEdicion, datos);
+        // llama a la funcion del evento para actualizar el event0
+      } else {
+        await this.eventoService.crearEvento(datos);
+        // si no se esta editando se llama a la funcion de crear el evento de evento service
+      }
 
       // llama al metodo crearEvento de evento.service.ts que permite guardar con addDoc a la coleccion creada alla
 
       this.router.navigate(['/dashboard']);
 
-      // te redirige al dashboard
+      // te redirige al dashboard si da exito
 
     } catch (error: any) {
       this.mensajeError = 'No se ha podido crear el evento';
       setTimeout(() => this.mensajeError = null, 3000);
-
       // si hay error salta
     } finally {
       this.cargando = false;
@@ -112,11 +175,11 @@ export class CrearEventoComponent {
 
   }
 
+  // CHECKED
   cancelar(): void {
     this.router.navigate(['/dashboard']);
   }
-
-  // metodo simple para rediriger al dashboard al darle al boton cancelar
+  // al darle al boton de cancelar nos redirigira simplemente al dashboard
 
 
 
@@ -133,100 +196,154 @@ export class CrearEventoComponent {
 
 sugerenciasCiudades: any[] = [];
 mostrarSugerenciasCiudades = false;
+// al hacer focus en el input de ciudades con mas de 3 caracteres se vuelve TRUE
 sugerenciasDirecciones: any[] = [];
 mostrarSugerenciasDirecciones = false;
+// lo mismo que en ciudades
+
+// CHECKED
+// esta funcion recoge lo que el usuario esta escribiendo en el input de Ciudad
+ciudadInput(event: any): void {
+    const query = event.target.value;
+    // query seria el string que esta escribiendo el usuario
+    this.buscarCiudades(query);
+    // llama a la funcion
+}
 
 
+// CHECKED
+// le llega lo que le mandamos por onCiudadInput()
 // esta funcion realizara la busqueda de ciudades utilizadno la api segun el texto introducido por el usuario
-
 buscarCiudades(query: string): void {
-
+    // Esto provoca que cuando el usuario escriba menos de 3 caracteres no salgan sugerencias
     if (query.length < 3) {
         this.sugerenciasCiudades = [];
         return;
     }
 
-    // SI lo que introduce el usuario en el campo es menor a 3 letras no mostrara nada
-
+    // se construye la url de nominatim:
+    // city=${query}: se busca especificamente en el campo de ciudades
+    // format=json: se pide la respuesta en formato json para que js lo entienda
+    // addressdetails=1: es lo mas importante, ya que es la parte de la url que desglose
+    // la direccion de la ciudad (para que luego se pueda sacar la ciudad, el puebo, la provincia, la calle)
+    // limit=5: es para que solo salgan 5 resultados
     const url = `https://nominatim.openstreetmap.org/search?city=${query}&format=json&addressdetails=1&limit=5`;
 
-    // query es lo que introducira el usuario en el input
-
-    // hace la llamada asincrona a la api usando fetch
+    // se hace la llamada a la web con la url
     fetch(url)
         .then(response => response.json())
+        // nada mas devuelva una respuesta, se convierte en json
         .then(data => {
-            // se mostrara el resultado de la busqueda de una forma mas legible
-            this.sugerenciasCiudades = data.map((lugar: any) => ({
+          console.log(`resultados para: ${query}`, data);
+            // se crea un array vacio donde se guardan los resultados
+            const resultadosLimpios = [];
+
+            // se recorre cada lugar que nos llega de la api
+            for (let i = 0; i < data.length; i++) {
+              const lugar = data[i];
+              // lugar es cada sitio individual
+
+              // se extrae la ciudad o pueblo
+              const nombreCiudad = lugar.address?.city || lugar.address?.town || lugar.address?.village || lugar.address?.county;
+              
+              // se crea un objeto mas pequeño del lugar
+              // de aqui luego se cogera patchValue para seleccionar lo que sea y saldra uno de los dos
+              const ciudadSimplificada = {
                 nombre: lugar.display_name,
-                // Intenta obtener la ciudad de diferentes campos de la respuesta de Nominatim de los que estan disponibles
-                ciudad: lugar.address?.city || lugar.address?.town || lugar.address?.village || lugar.address?.county
-            }));
+                ciudad: nombreCiudad
+              };
+
+              resultadosLimpios.push(ciudadSimplificada);
+              // se mete este objeto simplificado en la lista limpia
+            }
+
+            this.sugerenciasCiudades = resultadosLimpios;
+            // y esa lista limpia dentro de la variable de la clase
         });
 }
 
 
-// maneja el evento de entrada, cada vez que hay una pulsacion
-
-onCiudadInput(event: any): void {
-    const query = event.target.value;
-    this.buscarCiudades(query);
-}
-
+// CHECKED
 // Se ejecuta cada vez que el usuario hace click en una sugerencia de un lugar 
-
 seleccionarCiudad(sugerencia: any): void {
-    // ASUMIENDO QUE EXISTE this.formularioEvento
+    // patchValue sera la funcion que lograra que al hacer click en una ciudad escrita
+    // se coloque, no borra el formuarlio, si no que cambia el valor por la sugerencia
     this.formularioEvento.patchValue({
-        // patchValue actualiza el campo ciudad del formulario con el valor elegido
         ciudad: sugerencia.ciudad || sugerencia.nombre
+        // ciudad: Sevilla
+        // nombre: Sevilla, Andalucia, España
     });
+    // una vez seleccionada se limpian las sugerencias
     this.sugerenciasCiudades = [];
+    // se oculta es desplegable
     this.mostrarSugerenciasCiudades = false;
-
-    // una vez elegido se ocultan las sugerencias y desaparece el div de sugerencias
 }
 
 
 
 
 
-// Lógica de Direcciones
 
+
+// CHECKED
+// es el mismo sistema que el de la ciudad
+direccionInput(event: any): void {
+    const query = event.target.value;
+    this.buscarDirecciones(query);
+}
+
+
+// CHECKED
 // esta funcion realizara la busqueda de direcciones de una ciudad ya conocida previamente por el otro campo
-
 buscarDirecciones(query: string): void {
-    // También limpiamos si la consulta es corta.
+    // filtro de logintud al igual que en las ciudades
     if (query.length < 3) {
         this.sugerenciasDirecciones = [];
         return;
     }
 
-    // Aseguramos que la ciudad ya esté seleccionada/escrita.
+    // aseguramos que hay una ciudad ya escrita en ese campo
     const ciudad = this.formularioEvento.value.ciudad;
     if (!ciudad) return; 
 
-    // Usamos el campo 'road' y la 'city' para mejorar la búsqueda
+    // se crea la url y en este caso se coloca tambien la ciudad
+    // street=${query}: se busca la calle
+    // se busca la calle teniendo en cuenta de que tiene que pertenecer a la ciudad que se especifico
     const url = `https://nominatim.openstreetmap.org/search?street=${query}&city=${ciudad}&format=json&limit=5`;
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
-            this.sugerenciasDirecciones = data.map((lugar: any) => ({
+            const resultadosLimpios = [];
+
+            for (let i = 0; i < data.length; i++) {
+              const lugar = data[i];
+
+              let calleNombre = lugar.address?.road;
+
+              // se busca expresamente el campo calle,
+              // si no, usa el nombre comleto
+              if (!calleNombre) {
+                calleNombre = lugar.display_name;
+              }
+
+              // de aqui luego se cogera patchValue para seleccionar lo que sea y saldra uno de los dos
+              const direccionSimplificada = {
                 nombre: lugar.display_name,
-                // Usamos 'road' o 'display_name' para la dirección
-                direccion: lugar.address?.road || lugar.display_name 
-            }));
+                direccion: calleNombre
+              };
+
+              resultadosLimpios.push(direccionSimplificada)
+            }
+
+            this.sugerenciasDirecciones = resultadosLimpios;
         });
 }
 
-onDireccionInput(event: any): void {
-    const query = event.target.value;
-    this.buscarDirecciones(query);
-}
 
+// CHECKED
+// funciona de la misma manera que con ciudad
 seleccionarDireccion(sugerencia: any): void {
-    // ¡CORREGIDO! DEBE HACER patchValue en el campo 'direccion', no 'ciudad'.
     this.formularioEvento.patchValue({
         direccion: sugerencia.direccion || sugerencia.nombre
     });
@@ -240,83 +357,52 @@ seleccionarDireccion(sugerencia: any): void {
 
 
 
-
-
-// Asegúrate de que tienes 'formularioEvento: FormGroup;' declarado e inicializado 
-// en tu componente CrearEventoComponent.
-
-/**
- * Configura los listeners para validar la hora y fecha del evento.
- * Se llama típicamente en ngOnInit o después de inicializar formularioEvento.
- */
+// CHECKED
+// esta funcion escucha constantemente los cambios que hace el usuario en ambos campos
+// gracias al constructor se activa nada mas se accede a la vista de crear evento
 validarHoraMaxima(): void {
-    // 1. Verificar la hora al inicio para establecer el estado inicial.
-    // Aunque la validación se hace a través de los listeners, es buena práctica
-    // correrla una vez al inicio si los campos ya tienen valores.
-    this.verificarHoraValida(); 
+  // cogemos ambos campos, no solo su valor, si no el valor que va cambiando inclusive (por el valueChanges)
+  // verificarHoraMaxima se ejecuta y muestra los errores una vez haga submit,
+  // este no, este es siempre que haya un cambio, llama a esta primera funcion
+  const cambiosFecha = this.formularioEvento.get('fecha')?.valueChanges;
+  const cambiosHora = this.formularioEvento.get('hora')?.valueChanges;
+  // VALUECHANGES SERIA UN OBSERBABLE
 
-    // 2. Escuchar cambios en fecha y hora y disparar la validación.
-    // Usamos el operador '?.' para seguridad, ya que los controles podrían no existir.
-    
-    this.formularioEvento.get('fecha')?.valueChanges.subscribe(() => {
-        this.verificarHoraValida();
-    });
-
-    this.formularioEvento.get('hora')?.valueChanges.subscribe(() => {
-        this.verificarHoraValida();
-    });
-    
-    // NOTA: Para limpiar errores al cambiar la fecha, es mejor usar la función 
-    // verificarHoraValida() que ya limpia los errores si la validación es correcta.
+  // cada vez que el usuario cambia el contenido del input llama a la funcion para que verifique
+  cambiosFecha?.subscribe(() => this.verificarHoraValida());
+  cambiosHora?.subscribe(() => this.verificarHoraValida());
 }
 
-/**
- * Valida que la hora seleccionada no esté en el pasado 
- * y no exceda las 12 horas desde el momento actual.
- * @returns true si la hora es válida, false si es inválida.
- */
+// CHECKED
 verificarHoraValida(): boolean {
-    const fechaControl = this.formularioEvento.get('fecha');
-    const horaControl = this.formularioEvento.get('hora');
+  const fecha = this.formularioEvento.get('fecha')?.value;
+  const hora = this.formularioEvento.get('hora')?.value;
+  // valores de los inputs fecha y hora
+  const horaInput = this.formularioEvento.get('hora');
+  // input concreto de hora
 
-    const fecha = fechaControl?.value;
-    const hora = horaControl?.value;
+  if (!fecha || !hora) return false;
 
-    // Si falta alguno de los valores, asumimos que es válido temporalmente
-    // (la validación 'required' se encarga de que no estén vacíos).
-    if (!fecha || !hora) {
-        // Importante: si no hay errores, se debe limpiar el control.
-        horaControl?.setErrors(null);
-        return true;
-    }
+  const ahora = new Date();
 
-    // 1. Obtener fecha/hora actual y del evento
-    const ahora = new Date();
-    // NOTA: Usar 'T' es esencial para asegurar que la fecha/hora se parsea como local o UTC, 
-    // dependiendo del estándar del navegador, pero es la forma estándar de unir fecha e hora.
-    const eventoDateTime = new Date(`${fecha}T${hora}`); 
-    
-    // 2. Calcular diferencia en horas: (evento - ahora) / milisegundos_en_una_hora
-    const diferenciaHoras = (eventoDateTime.getTime() - ahora.getTime()) / (1000 * 60 * 60);
-    
-    // 3. Validación: No en el pasado
-    if (diferenciaHoras < 0) {
-        // Marcar error 'pasado'
-        horaControl?.setErrors({ pasado: true });
-        return false;
-    }
+  const eventoFechaHora = new Date(`${fecha}T${hora}`);
 
-    // 4. Validación: No más de 12 horas en el futuro
-    if (diferenciaHoras > 12) {
-        // Marcar error 'futuroLejano'
-        horaControl?.setErrors({ futuroLejano: true });
-        return false;
-    }
+  const diferencia = (eventoFechaHora.getTime() - ahora.getTime()) / (1000 * 60 * 60);
 
-    // Si pasa ambas validaciones:
-    // Limpiar todos los errores personalizados del control.
-    horaControl?.setErrors(null);
-    return true;
-}
+  // si la diferencia de horas es negativa
+  if (diferencia < 0) {
+    horaInput?.setErrors({ pasado: true });
+    return false;
+  } 
+  // si es superior a las 12 horas
+  if (diferencia > 12) {
+    horaInput?.setErrors({ futuroLejano: true });
+    return false;
+  }
+
+  // si esta bien se quitan los errores y se devuelve true
+  horaInput?.setErrors(null);
+  return true;
+  }
 
 }

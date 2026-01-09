@@ -1,0 +1,60 @@
+<app-navbar></app-navbar>
+
+<div class="admin-dashboard">
+    <h1>Panel de Administración</h1>
+
+    <div class="estadisticas-container">
+        <div class="estadistica">
+            <h3>{{ totalUsuarios }}</h3>
+            <p>Usuarios</p>
+        </div>
+        <div class="estadistica">
+            <h3>{{ totalEventos }}</h3>
+            <p>Eventos</p>
+        </div>
+        <div class="estadistica">
+            <h3>{{ reportesPendientesNumero }}</h3>
+            <p>Reportes</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="reportes-container">
+        <h2>Reportes</h2>
+
+        <div class="reportes-grid">
+            <div *ngFor="let rep of reportes" class="reporte-card">
+                <div class="header">
+                    <strong>{{ rep.usuarioReportadorNombre }}</strong> reportó un {{ rep.tipoContenido }}
+                </div>
+                
+                <div class="body">
+                    <div *ngIf="rep.tipoContenido === 'mensaje'">
+                        "{{ rep.textoContenido }}"
+                    </div>
+                    
+                    <div *ngIf="rep.tipoContenido === 'image' || rep.tipoContenido === 'video'">
+                        <img *ngIf="rep.tipoContenido === 'image'" [src]="rep.contenidoId" style="width: 150px;">
+                        <video *ngIf="rep.tipoContenido === 'video'" [src]="rep.contenidoId" style="width: 150px;"></video>
+                    </div>
+                </div>
+
+                <div class="acciones">
+                    <button (click)="eliminarContenido(rep)" class="boton-borrar">Eliminar</button>
+                    <!-- se le manda el reporte completo con sus datos -->
+                    <button (click)="suspenderUsuario(rep.usuarioReportadoId)" class="boton-borrar">Suspender</button>
+                    <!-- para suspender a un usuario se le pasa el usuarioReportadoId, que es el uid del usuario -->
+                    <button (click)="ignorarReporte(rep.id!)" class="boton-borrar">Ignorar</button>
+                    <!-- la exclamacion aclara a angular que el rep.id no es nulo, ya que a la hora
+                    de declarar el modelo, el id es un campo opcional, pero nosotros finalmente, lo ponemos
+                    en crearReporte gracias a addDoc, y ademas, lo especificamos como campo añadido en obtenerReportesPendientes -->
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="reportes.length === 0" class="p-reporte">
+            <p>No hay reportes pendientes</p>
+        </div>
+    </div>
+</div>

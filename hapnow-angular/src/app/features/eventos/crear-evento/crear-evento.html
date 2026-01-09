@@ -11,7 +11,8 @@
     </div>
 
     <form [formGroup]="formularioEvento" (ngSubmit)="onSubmit()" class="evento-form">
-
+        <!-- cuando se escribe esto, se busca en la clase la variable
+        y la conecta con los inputs de aqui -->
 
         <div class="form-group">
             <label for="">Titulo del evento</label>
@@ -33,30 +34,40 @@
             </select>
         </div>
 
-<div class="form-subform">
-    <div class="form-group autocomplete"> 
-        <label for="ciudad">Ciudad</label>
-        <input type="text" id="ciudad" formControlName="ciudad" (input)="onCiudadInput($event)" (focus)="mostrarSugerenciasCiudades = true" placeholder="Ej: Sevilla">
-        
-        <div *ngIf="mostrarSugerenciasCiudades && sugerenciasCiudades.length > 0" class="autocomplete-dropdown">
-            <div *ngFor="let sugerencia of sugerenciasCiudades" class="autocomplete-item" (click)="seleccionarCiudad(sugerencia); $event.stopPropagation()">
-                {{ sugerencia.nombre }}
+
+        <div class="form-subform">
+            <div class="form-group autocomplete"> 
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" formControlName="ciudad" (input)="ciudadInput($event)" (focus)="mostrarSugerenciasCiudades = true" placeholder="Ej: Sevilla">
+                <!-- aqui lo que sucede es que cada vez que el usuario presiona una tecla, se envia todo a buscarCiudades
+                ademas de que se pone a true mostrarSugerenciasCiudades -->
+                
+                <div *ngIf="mostrarSugerenciasCiudades && sugerenciasCiudades.length > 0" class="dropdown">
+                    <!-- mostrarSugerenciasCIudades se vuelve a true automaticamente
+                    y onCiudadInput llamaria a buscarCiudades el cual se percataria si sugerenciasCiudades es mayor a 0 -->
+                    <div *ngFor="let sugerencia of sugerenciasCiudades" class="dropdown-item" (click)="seleccionarCiudad(sugerencia); $event.stopPropagation()">
+                        {{ sugerencia.nombre }}
+                    </div>
+                    <!-- cada sugerencia es ese minibloque generado en el fetch de 5 resultados especificados en la url
+                    sugerencia.nombre seria el nombre largo
+                    al hacer click se activa seleccionarCiudad que cumplira su cometido cuando hagamos click, y como esta
+                    funcion vacia el sugerenciasCiudades y se pone a false el focus pues se dejan de cumplir las condiciones
+                    y se elimina el div -->
+                </div>
+                
+            </div>
+            
+            <div class="form-group autocomplete">
+                <label for="direccion">Direccion</label>
+                <input type="text" id="direccion" formControlName="direccion" (input)="direccionInput($event)" (focus)="mostrarSugerenciasDirecciones = true" placeholder="Ej: Calle Sierpes">
+                
+                <div *ngIf="mostrarSugerenciasDirecciones && sugerenciasDirecciones.length > 0" class="dropdown">
+                    <div *ngFor="let sugerencia of sugerenciasDirecciones" class="dropdown-item" (click)="seleccionarDireccion(sugerencia); $event.stopPropagation()">
+                        {{ sugerencia.nombre }}
+                    </div>
+                </div>
             </div>
         </div>
-        
-    </div>
-    
-    <div class="form-group autocomplete">
-        <label for="direccion">Direccion</label>
-        <input type="text" id="direccion" formControlName="direccion" (input)="onDireccionInput($event)" (focus)="mostrarSugerenciasDirecciones = true" placeholder="Ej: Calle Cuna, 1">
-        
-        <div *ngIf="mostrarSugerenciasDirecciones && sugerenciasDirecciones.length > 0" class="autocomplete-dropdown">
-            <div *ngFor="let sugerencia of sugerenciasDirecciones" class="autocomplete-item" (click)="seleccionarDireccion(sugerencia); $event.stopPropagation()">
-                {{ sugerencia.nombre }}
-            </div>
-        </div>
-    </div>
-</div>
 
 
         <div class="form-subform">
@@ -69,11 +80,20 @@
                 <label for="">Hora</label>
                 <input type="time" id="hora" formControlName="hora">
 
-                <div *ngIf="formularioEvento.get('hora')?.errors?.['pasado']" class="error">
-                    La hora no puede ser en el pasado
-                </div>
-                <div *ngIf="formularioEvento.get('hora')?.errors?.['futuroLejano']" class="error">
-                    El evento debe ser en las próximas 12 horas
+                <div *ngIf="formularioEvento.get('hora')?.invalid && (formularioEvento.get('hora')?.touched || formularioEvento.get('hora')?.dirty)">
+                    <!-- invalid es para cuando algun campo tiene un error, ya sea que este vacio o es en el pasado etc
+                    touched es cuando el usuario hizo click y salio
+                    dirty es cuando el usuario ha escrito algo -->
+                    <div *ngIf="formularioEvento.get('hora')?.errors?.['pasado']" class="error-mensaje">
+                        La hora no puede ser en el pasado
+                    </div>
+                    <div *ngIf="formularioEvento.get('hora')?.errors?.['futuroLejano']" class="error-mensaje">
+                        El evento debe ser en las proximas 12 horas como maximo
+                    </div>
+                    <!-- esto viene del Validators.required que etsa ene le constructor, cada campo tiene uno -->
+                    <div *ngIf="formularioEvento.get('hora')?.errors?.['required']" class="error-mensaje">
+                        La hora es obligatoria
+                    </div>
                 </div>
             </div>
         </div>

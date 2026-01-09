@@ -48,11 +48,20 @@
             
             <div *ngIf="tieneError('password')" class="error">
                 {{ obtenerMensajeError('password') }}
+                <!-- password es el formControlName -->
             </div>
         </div>
 
         <button type="submit" [disabled]="cargando" class="boton1">
-            {{ cargando ? 'Creando cuenta...' : 'Registrarse' }}
+            <ng-container *ngIf="cargando; else botonNormal">
+                Creando cuenta...
+            </ng-container>
+            <!-- si cargando es true pones eso, pero si no busca y ejecuta
+            el bloque de codigo con la etiqueta botonNormal -->
+        
+            <ng-template #botonNormal>
+                Registrarse
+            </ng-template>
         </button>
 
     </form>

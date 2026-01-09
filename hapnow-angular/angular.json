@@ -27,10 +27,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "marker-icon.png",
+                "input": "node_modules/leaflet/dist/images",
+                "output": "assets"
+              },
+              {
+                "glob": "marker-shadow.png",
+                "input": "node_modules/leaflet/dist/images",
+                "output": "assets"
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/leaflet/dist/leaflet.css"
             ]
           },
           "configurations": {

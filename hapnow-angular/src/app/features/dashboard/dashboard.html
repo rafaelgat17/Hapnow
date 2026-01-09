@@ -9,45 +9,86 @@
 
       <div class="iconos-section">
 
-        <button class="boton-icono">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="filtros-adicionales">
+          <label class="switch">
+            <input type="checkbox" (change)="activarProximidad($event)">
+            <span class="slider"></span>
+          </label>
+          <span>20km</span>
+        </div>
+
+        <button class="boton-icono" (click)="activarFiltroCategoria('deportes')">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="categoriasActivas['deportes']">
             <rect width="48" height="48" rx="12" fill="#FF6B6B"/> 
             <path d="M20 24C20 25.0609 20.4214 26.0783 21.1716 26.8284C21.9217 27.5786 22.9391 28 24 28C25.0609 28 26.0783 27.5786 26.8284 26.8284C27.5786 26.0783 28 25.0609 28 24C28 22.9391 27.5786 21.9217 26.8284 21.1716C26.0783 20.4214 25.0609 20 24 20C22.9391 20 21.9217 20.4214 21.1716 21.1716C20.4214 21.9217 20 22.9391 20 24ZM12 20H16V28H12V20ZM32 20H36V28H32V20Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M24 14.6667V33.3334M12 17.3334C12 16.6262 12.281 15.9479 12.781 15.4478C13.2811 14.9477 13.9594 14.6667 14.6667 14.6667H33.3333C34.0406 14.6667 34.7189 14.9477 35.219 15.4478C35.719 15.9479 36 16.6262 36 17.3334V30.6667C36 31.374 35.719 32.0523 35.219 32.5524C34.7189 33.0525 34.0406 33.3334 33.3333 33.3334H14.6667C13.9594 33.3334 13.2811 33.0525 12.781 32.5524C12.281 32.0523 12 31.374 12 30.6667V17.3334Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!categoriasActivas['deportes']">
+            <rect x="1" y="1" width="46" height="46" rx="11" stroke="#FF6B6B" stroke-width="2"/>
+            <path d="M20 24C20 25.0609 20.4214 26.0783 21.1716 26.8284C21.9217 27.5786 22.9391 28 24 28C25.0609 28 26.0783 27.5786 26.8284 26.8284C27.5786 26.0783 28 25.0609 28 24C28 22.9391 27.5786 21.9217 26.8284 21.1716C26.0783 20.4214 25.0609 20 24 20C22.9391 20 21.9217 20.4214 21.1716 21.1716C20.4214 21.9217 20 22.9391 20 24ZM12 20H16V28H12V20ZM32 20H36V28H32V20Z" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 14.6666V33.3333M12 17.3333C12 16.626 12.281 15.9478 12.781 15.4477C13.2811 14.9476 13.9594 14.6666 14.6667 14.6666H33.3333C34.0406 14.6666 34.7189 14.9476 35.219 15.4477C35.719 15.9478 36 16.626 36 17.3333V30.6666C36 31.3739 35.719 32.0521 35.219 32.5522C34.7189 33.0523 34.0406 33.3333 33.3333 33.3333H14.6667C13.9594 33.3333 13.2811 33.0523 12.781 32.5522C12.281 32.0521 12 31.3739 12 30.6666V17.3333Z" stroke="#FF6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
         
-        <button class="boton-icono">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button class="boton-icono" (click)="activarFiltroCategoria('ocio')">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="categoriasActivas['ocio']">
             <rect width="48" height="48" rx="12" fill="#4ECDC4"/>
             <path d="M28 25.3333H28.0133M32 25.3333H32.0133M25.5893 20H34.4106C34.7814 19.9999 35.1482 20.0772 35.4875 20.2269C35.8267 20.3765 36.131 20.5953 36.381 20.8692C36.6309 21.1431 36.821 21.4661 36.9391 21.8176C37.0571 22.1691 37.1006 22.5414 37.0666 22.9107L36.3106 31.1533C36.1893 32.478 35.5773 33.7094 34.5948 34.6061C33.6123 35.5027 32.3301 35.9999 31 36H29C27.6698 35.9999 26.3877 35.5027 25.4052 34.6061C24.4227 33.7094 23.8107 32.478 23.6893 31.1533L22.9333 22.9107C22.8994 22.5414 22.9428 22.1691 23.0609 21.8176C23.1789 21.4661 23.369 21.1431 23.619 20.8692C23.8689 20.5953 24.1732 20.3765 24.5125 20.2269C24.8518 20.0772 25.2185 19.9999 25.5893 20Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M28 29.9999C29.3333 30.8888 30.6666 30.8888 32 29.9999M19.5093 29.3093C19.34 29.3254 19.17 29.3334 19 29.3333H17C15.6698 29.3331 14.3877 28.836 13.4052 27.9393C12.4227 27.0427 11.8107 25.8112 11.6893 24.4866L10.9333 16.2439C10.8994 15.8747 10.9428 15.5024 11.0609 15.1509C11.1789 14.7994 11.369 14.4764 11.619 14.2024C11.8689 13.9285 12.1732 13.7098 12.5125 13.5601C12.8518 13.4104 13.2185 13.3332 13.5893 13.3333H22.4106C23.1179 13.3333 23.7962 13.6142 24.2963 14.1143C24.7964 14.6144 25.0773 15.2927 25.0773 15.9999M16 18.6666H16.0133M20 18.6666H20.0133" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M16 23.9999C17.0187 23.3199 18.0369 23.1599 19.0547 23.5199" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!categoriasActivas['ocio']">
+            <rect x="1" y="1" width="46" height="46" rx="11" stroke="#4ECDC4" stroke-width="2"/>
+            <path d="M28 25.3333H28.0133M32 25.3333H32.0133M25.5893 20H34.4106C34.7814 19.9999 35.1482 20.0772 35.4875 20.2269C35.8267 20.3765 36.131 20.5953 36.381 20.8692C36.6309 21.1431 36.821 21.4661 36.9391 21.8176C37.0571 22.1691 37.1006 22.5414 37.0666 22.9107L36.3106 31.1533C36.1893 32.478 35.5773 33.7094 34.5948 34.6061C33.6123 35.5027 32.3301 35.9999 31 36H29C27.6698 35.9999 26.3877 35.5027 25.4052 34.6061C24.4227 33.7094 23.8107 32.478 23.6893 31.1533L22.9333 22.9107C22.8994 22.5414 22.9428 22.1691 23.0609 21.8176C23.1789 21.4661 23.369 21.1431 23.619 20.8692C23.8689 20.5953 24.1732 20.3765 24.5125 20.2269C24.8518 20.0772 25.2185 19.9999 25.5893 20Z" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 30C29.3333 30.8889 30.6666 30.8889 32 30M19.5093 29.3094C19.34 29.3255 19.17 29.3335 19 29.3334H17C15.6698 29.3333 14.3877 28.8361 13.4052 27.9394C12.4227 27.0428 11.8107 25.8113 11.6893 24.4867L10.9333 16.244C10.8994 15.8748 10.9428 15.5025 11.0609 15.151C11.1789 14.7995 11.369 14.4765 11.619 14.2026C11.8689 13.9287 12.1732 13.7099 12.5125 13.5602C12.8518 13.4106 13.2185 13.3333 13.5893 13.3334H22.4106C23.1179 13.3334 23.7962 13.6143 24.2963 14.1144C24.7964 14.6145 25.0773 15.2928 25.0773 16M16 18.6667H16.0133M20 18.6667H20.0133" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 23.9999C17.0187 23.3199 18.0369 23.1599 19.0547 23.5199" stroke="#4ECDC4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
         
-        <button class="boton-icono">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <button class="boton-icono" (click)="activarFiltroCategoria('estudio')">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="categoriasActivas['estudio']">
             <rect width="48" height="48" rx="12" fill="#95E1D3"/>
             <path d="M37.3334 20.0001L24.0001 14.6667L10.6667 20.0001L24.0001 25.3334L37.3334 20.0001ZM37.3334 20.0001V28.0001" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M16 22.1333V29.3333C16 30.3942 16.8429 31.4116 18.3431 32.1617C19.8434 32.9119 21.8783 33.3333 24 33.3333C26.1217 33.3333 28.1566 32.9119 29.6569 32.1617C31.1571 31.4116 32 30.3942 32 29.3333V22.1333" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!categoriasActivas['estudio']">
+            <rect x="1" y="1" width="46" height="46" rx="11" stroke="#95E1D3" stroke-width="2"/>
+            <path d="M37.3334 20L24.0001 14.6666L10.6667 20L24.0001 25.3333L37.3334 20ZM37.3334 20V28" stroke="#95E1D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 22.1333V29.3333C16 30.3942 16.8429 31.4116 18.3431 32.1617C19.8434 32.9119 21.8783 33.3333 24 33.3333C26.1217 33.3333 28.1566 32.9119 29.6569 32.1617C31.1571 31.4116 32 30.3942 32 29.3333V22.1333" stroke="#95E1D3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
         
-        <button class="boton-icono">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <button class="boton-icono" (click)="activarFiltroCategoria('cultural')">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="categoriasActivas['cultural']">
             <rect x="1" y="1" width="46" height="46" rx="11" fill="#C7A2FF"/>
             <rect x="1" y="1" width="46" height="46" rx="11" stroke="#C7A2FF" stroke-width="2"/>
             <path d="M24 36C20.8174 36 17.7652 34.7357 15.5147 32.4853C13.2643 30.2348 12 27.1826 12 24C12 20.8174 13.2643 17.7652 15.5147 15.5147C17.7652 13.2643 20.8174 12 24 12C30.6267 12 36 16.776 36 22.6667C36 24.08 35.368 25.4373 34.2427 26.4373C33.1173 27.4373 31.5907 28 30 28H26.6667C26.0718 27.9904 25.4908 28.18 25.0162 28.5387C24.5415 28.8973 24.2004 29.4044 24.0471 29.9792C23.8938 30.5541 23.9371 31.1637 24.1702 31.711C24.4033 32.2584 24.8127 32.7121 25.3333 33C25.5996 33.2457 25.7821 33.5685 25.8554 33.9233C25.9287 34.278 25.8889 34.6468 25.7418 34.9778C25.5947 35.3089 25.3476 35.5855 25.0352 35.7688C24.7227 35.9521 24.3607 36.033 24 36Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M18 22.0001C18 22.3537 18.1405 22.6928 18.3905 22.9429C18.6406 23.1929 18.9797 23.3334 19.3333 23.3334C19.687 23.3334 20.0261 23.1929 20.2761 22.9429C20.5262 22.6928 20.6667 22.3537 20.6667 22.0001C20.6667 21.6465 20.5262 21.3073 20.2761 21.0573C20.0261 20.8072 19.687 20.6667 19.3333 20.6667C18.9797 20.6667 18.6406 20.8072 18.3905 21.0573C18.1405 21.3073 18 21.6465 18 22.0001ZM23.3333 18.0001C23.3333 18.3537 23.4738 18.6928 23.7239 18.9429C23.9739 19.1929 24.313 19.3334 24.6667 19.3334C25.0203 19.3334 25.3594 19.1929 25.6095 18.9429C25.8595 18.6928 26 18.3537 26 18.0001C26 17.6465 25.8595 17.3073 25.6095 17.0573C25.3594 16.8072 25.0203 16.6667 24.6667 16.6667C24.313 16.6667 23.9739 16.8072 23.7239 17.0573C23.4738 17.3073 23.3333 17.6465 23.3333 18.0001ZM28.6667 22.0001C28.6667 22.3537 28.8071 22.6928 29.0572 22.9429C29.3072 23.1929 29.6464 23.3334 30 23.3334C30.3536 23.3334 30.6928 23.1929 30.9428 22.9429C31.1929 22.6928 31.3333 22.3537 31.3333 22.0001C31.3333 21.6465 31.1929 21.3073 30.9428 21.0573C30.6928 20.8072 30.3536 20.6667 30 20.6667C29.6464 20.6667 29.3072 20.8072 29.0572 21.0573C28.8071 21.3073 28.6667 21.6465 28.6667 22.0001Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!categoriasActivas['cultural']">
+            <rect x="1" y="1" width="46" height="46" rx="11" stroke="#C7A2FF" stroke-width="2"/>
+            <path d="M24 36C20.8174 36 17.7652 34.7357 15.5147 32.4853C13.2643 30.2348 12 27.1826 12 24C12 20.8174 13.2643 17.7652 15.5147 15.5147C17.7652 13.2643 20.8174 12 24 12C30.6267 12 36 16.776 36 22.6667C36 24.08 35.368 25.4373 34.2427 26.4373C33.1173 27.4373 31.5907 28 30 28H26.6667C26.0718 27.9904 25.4908 28.18 25.0162 28.5387C24.5415 28.8973 24.2004 29.4044 24.0471 29.9792C23.8938 30.5541 23.9371 31.1637 24.1702 31.711C24.4033 32.2584 24.8127 32.7121 25.3333 33C25.5996 33.2457 25.7821 33.5685 25.8554 33.9233C25.9287 34.278 25.8889 34.6468 25.7418 34.9778C25.5947 35.3089 25.3476 35.5855 25.0352 35.7688C24.7227 35.9521 24.3607 36.033 24 36Z" stroke="#C7A2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18 22C18 22.3536 18.1405 22.6927 18.3905 22.9428C18.6406 23.1928 18.9797 23.3333 19.3333 23.3333C19.687 23.3333 20.0261 23.1928 20.2761 22.9428C20.5262 22.6927 20.6667 22.3536 20.6667 22C20.6667 21.6463 20.5262 21.3072 20.2761 21.0572C20.0261 20.8071 19.687 20.6666 19.3333 20.6666C18.9797 20.6666 18.6406 20.8071 18.3905 21.0572C18.1405 21.3072 18 21.6463 18 22ZM23.3333 18C23.3333 18.3536 23.4738 18.6927 23.7239 18.9428C23.9739 19.1928 24.313 19.3333 24.6667 19.3333C25.0203 19.3333 25.3594 19.1928 25.6095 18.9428C25.8595 18.6927 26 18.3536 26 18C26 17.6463 25.8595 17.3072 25.6095 17.0572C25.3594 16.8071 25.0203 16.6666 24.6667 16.6666C24.313 16.6666 23.9739 16.8071 23.7239 17.0572C23.4738 17.3072 23.3333 17.6463 23.3333 18ZM28.6667 22C28.6667 22.3536 28.8071 22.6927 29.0572 22.9428C29.3072 23.1928 29.6464 23.3333 30 23.3333C30.3536 23.3333 30.6928 23.1928 30.9428 22.9428C31.1929 22.6927 31.3333 22.3536 31.3333 22C31.3333 21.6463 31.1929 21.3072 30.9428 21.0572C30.6928 20.8071 30.3536 20.6666 30 20.6666C29.6464 20.6666 29.3072 20.8071 29.0572 21.0572C28.8071 21.3072 28.6667 21.6463 28.6667 22Z" stroke="#C7A2FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
         
-        <button class="boton-icono">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+        <button class="boton-icono" (click)="activarFiltroCategoria('profesional')">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="categoriasActivas['profesional']">
             <rect x="1" y="1" width="46" height="46" rx="11" fill="#FFB347"/>
             <rect x="1" y="1" width="46" height="46" rx="11" stroke="#FFB347" stroke-width="2"/>
             <path d="M12 33.3333H36M14.6667 17.3333C14.6667 16.9797 14.8071 16.6406 15.0572 16.3905C15.3072 16.1405 15.6464 16 16 16H32C32.3536 16 32.6928 16.1405 32.9428 16.3905C33.1929 16.6406 33.3333 16.9797 33.3333 17.3333V28C33.3333 28.3536 33.1929 28.6928 32.9428 28.9428C32.6928 29.1929 32.3536 29.3333 32 29.3333H16C15.6464 29.3333 15.3072 29.1929 15.0572 28.9428C14.8071 28.6928 14.6667 28.3536 14.6667 28V17.3333Z" stroke="#FEFEFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="!categoriasActivas['profesional']">
+            <rect x="1" y="1" width="46" height="46" rx="11" stroke="#FFB347" stroke-width="2"/>
+            <path d="M12 33.3333H36M14.6667 17.3333C14.6667 16.9797 14.8071 16.6406 15.0572 16.3905C15.3072 16.1405 15.6464 16 16 16H32C32.3536 16 32.6928 16.1405 32.9428 16.3905C33.1929 16.6406 33.3333 16.9797 33.3333 17.3333V28C33.3333 28.3536 33.1929 28.6928 32.9428 28.9428C32.6928 29.1929 32.3536 29.3333 32 29.3333H16C15.6464 29.3333 15.3072 29.1929 15.0572 28.9428C14.8071 28.6928 14.6667 28.3536 14.6667 28V17.3333Z" stroke="#FFB347" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
         
@@ -55,7 +96,17 @@
 
     </header>
 
+    <div class="mapa-section">
+      <div id="mapa-container" class="mapa-container">
+        
+      </div>
+    </div>
+
   </div>
+
+
+
+
 
 
   <div class="eventos-section">
@@ -86,7 +137,7 @@
     </header>
 
       <div class="eventos-scroll">
-        <div *ngIf="cargandoEventos" class="loading">
+        <div *ngIf="cargandoEventos" class="cargando">
           <p>Cargando Eventos...</p>
         </div>
 
@@ -168,7 +219,14 @@
               {{ evento.descripcion.length > 80 ? (evento.descripcion | slice:0:80) + '...' : evento.descripcion }}
             </p>
 
-            <button class="detalles-button" [routerLink]="['/evento', evento.id]">Ver detalles</button>
+            <div class="card-botones"> 
+              <button class="detalles-button" [routerLink]="['/evento', evento.id]">Ver detalles</button>
+              <!-- routerlink redirigira a la vista del evento detalle, y se le pasa el id de ESE evento -->
+              <button *ngIf="usuario?.uid === evento.creadorId" class="detalles-button" (click)="eliminarEvento(evento.id!)">
+                Cancelar Evento
+              </button>
+            </div>
+            
           </div>
 
         </div>

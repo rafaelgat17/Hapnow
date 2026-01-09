@@ -1,14 +1,10 @@
-import { Injectable, inject, signal } from '@angular/core';
+  import { Injectable, inject, signal } from '@angular/core';
 // iinject se usa para inyectar dependencias
 // signal es una funcion de angular para crear un estado reactivo que cambia segun la informacion que haya en el input
 import { Router } from '@angular/router';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, User } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, User, sendPasswordResetEmail } from '@angular/fire/auth';
 // Importa funciones específicas del SDK modular de Firebase Auth para crear, loguear, desloguear y escuchar el estado.
-import { Firestore, doc, setDoc, getDoc } from '@angular/fire/firestore';
-// Importa funciones del SDK modular de Firebase Firestore (DB):
-// Firestore: Tipo base para la inyección.
-// doc: Crea una referencia a un documento específico.
-// setDoc/getDoc: Escriben o leen un documento en la DB.
+import { Firestore, doc, setDoc, getDoc, Timestamp } from '@angular/fire/firestore';
 import { Usuario, RegistroData, LoginData } from '../../shared/models/usuario.model';
 // Importa la estructura de datos que usa este servicio (tipo de usuario, datos para login/registro).
 
@@ -17,29 +13,21 @@ import { Usuario, RegistroData, LoginData } from '../../shared/models/usuario.mo
 @Injectable({ providedIn: 'root' })
 // providedIn: 'root' asegura que este servicio sea un singleton (una sola instancia)
 // y esté disponible globalmente sin necesidad de módulos.
-export class AuthService { private auth = inject(Auth); private firestore = inject(Firestore); private router = inject(Router);
+export class AuthService { 
+
+// Se inyectan las herramientas que se configuraron en el app.config.ts
+private auth = inject(Auth); 
+private firestore = inject(Firestore); 
+private router = inject(Router);
 
 
 // Signal para estado del usuario actual
 usuarioActual = signal<Usuario | null>(null);
-// El estado reactivo central: guarda el objeto Usuario completo o null.
-// Cualquier componente que lea este Signal se actualizará automáticamente si cambia.
+// El estado reactivo central: guarda el objeto Usuario completo o null
+// cualquier componente que lea este signal se actualizara automaticamente si cambia
 
-constructor() {
-  // Escuchar cambios de autenticación
-  user(this.auth).subscribe((firebaseUser: User | null) => {
-    // Listener reactivo de Firebase que se dispara inmediatamente y cada vez que el estado de Auth cambia (login/logout).
-    if (firebaseUser) {
-      // Si Firebase confirma un usuario logueado:
-      // Usar setTimeout para evitar problemas de contexto
-      setTimeout(() => this.cargarDatosUsuario(firebaseUser.uid), 0);
-      // Llama a la función para cargar el perfil completo (nombre, rol, etc.) desde Firestore.
-    } else {
-      this.usuarioActual.set(null);
-    }
-  });
-}
 
+// CHECKED
 // REGISTRO
 async registrar(datos: RegistroData): Promise<void> {
     try {
@@ -48,21 +36,27 @@ async registrar(datos: RegistroData): Promise<void> {
         this.auth,
         datos.email,
         datos.password
-        // Crea la credencial de inicio de sesión y obtiene un UID (ID de usuario único).
+        // Crea la credencial de inicio de sesion y obtiene un UID
     );
     // este es un metodo propio de firebase (createUserWithEmailAndPassword)
+    // y crea un perifl para firebase, el cual le basta con el correo y la contraseña
 
     // Crear perfil en Firestore
     const nuevoUsuario: Usuario = {
-        uid: credencial.user.uid, // usa el uid generado por firebase auth
+        uid: credencial.user.uid,
+        // usa el uid generado por firebase auth
+        // pero tenemos que ponerlo porque setDoc no lo genera solo, eso lo hace addDoc
         email: datos.email,
         nombre: datos.nombre,
+        // se ponen los datos que le llegaron de registo.ts
         reputacion: 0,
+        totalValoraciones: 0,
         eventosCreados: 0,
         eventosAsistidos: 0,
         rol: 'usuario',
         fechaRegistro: new Date()
         // Estos serian los campos pertenecientes a cada usuario
+        // segun el modelo
     };
 
     // Guardar en Firestore
@@ -70,7 +64,7 @@ async registrar(datos: RegistroData): Promise<void> {
         doc(this.firestore, `usuarios/${credencial.user.uid}`),
         // aqui se especifica donde guardar
         nuevoUsuario
-        // setDoc: Escribe o sobrescribe el documento del perfil de usuario en la base de datos.
+        // setDoc: Escribe o sobrescribe el documento del perfil de usuario en la base de datos
     );
 
     // Actualizar signal
@@ -81,7 +75,6 @@ async registrar(datos: RegistroData): Promise<void> {
     this.router.navigate(['/dashboard']);
     
     } catch (error: any) {
-    console.error('Error en registro:', error);
     throw this.manejarError(error);
     }
 
@@ -90,7 +83,7 @@ async registrar(datos: RegistroData): Promise<void> {
 }
 
 
-
+// CHECKED
 // LOGIN
 async login(datos: LoginData): Promise<void> {
     try {
@@ -102,15 +95,16 @@ async login(datos: LoginData): Promise<void> {
         // comprueba que son credenciales correctas
     );
 
-    // Cargar datos del usuario desde Firestore
-    await this.cargarDatosUsuario(credencial.user.uid);
-    // Llama a la función que recuperará el perfil completo desde Firestore.
+    const idUsuario = credencial.user.uid;
+    // se crea un objeto llamado credencial con toda la informacion
+    // del usuario, entre ellas el uid que crea firebase
 
-    // Redirigir a dashboard
+    // Cargar datos del usuario desde Firestore
+    await this.cargarDatosUsuario(idUsuario);
+
     this.router.navigate(['/dashboard']);
 
     } catch (error: any) {
-    console.error('Error en login:', error);
     throw this.manejarError(error);
     }
 
@@ -118,71 +112,112 @@ async login(datos: LoginData): Promise<void> {
 }
 
 
-
-  // LOGOUT
+// CHECKED
+// LOGOUT
 async logout(): Promise<void> {
-    try {
     await signOut(this.auth);
-    // signOut(): Instrucción directa a Firebase para cerrar la sesión activa.
+    // funcion de firebase para cerrar la sesion actual
     this.usuarioActual.set(null);
-    // Se setea el usuarioActual a null (buena practica)
     this.router.navigate(['/login']);
-    // Se redirige a la pagina de login
-    
-    } catch (error) {
-    console.error('Error al cerrar sesión:', error);
-    throw error;
-
-    }
 }
 
 
 
-
-  // CARGAR DATOS DEL USUARIO
+// CHECKED
 private async cargarDatosUsuario(uid: string): Promise<void> {
   try {
-    const docRef = doc(this.firestore, `usuarios/${uid}`);
-    // docRef: Crea la referencia (dirección) al documento del perfil de usuario en Firestore.
-    const docSnap = await getDoc(docRef);
-    // getDoc: Comando que lee el documento desde el servidor de Firestore.
-    // docSnap: Es la "instantánea" del resultado de la lectura.
+    // Creamos la referencia al documento del usuario en la colección 'usuarios'
+    // Usamos el UID que nos da Firebase Auth para saber exactamente qué documento leer
+    const referencia = doc(this.firestore, `usuarios/${uid}`);
+    
+    // cogemos el documento del usuario concreto
+    const resultado = await getDoc(referencia);
 
-    if (docSnap.exists()) {
-      // docSnap.exists(): Verifica si el documento fue encontrado en esa dirección.
-      this.usuarioActual.set(docSnap.data() as Usuario);
-      // docSnap.data(): Extrae los datos del documento y actualiza la Signal.
+    // Verificamos si el documento realmente existe en Firestore
+    if (resultado.exists()) {
+      // Extraemos los datos del documento y le decimos a TS que tienen forma del modelo de usuario
+      const datos = resultado.data() as Usuario;
+
+      // si el campo suspendido es true, significa que el atributo de Usuario (de la interfaz) esta true
+      // y por lo tanto el usuario esta suspendido por culpa de un admin
+      if (datos.suspendido === true) {
+        alert('Tu cuenta ha sido suspendida por un administrador');
+        await this.logout(); 
+        // importante return para que pare de ejecutarse el resto de codigo de la funcion
+        return; 
+      }
+
+      // si no esta el usuario suspendido, actualizamos el estado global (el signal) a los 
+      // datos que nos han proporcionado desde el login
+      // Esto dispara automaticamente cambios en el Navbar y permite el paso a los Guards
+      this.usuarioActual.set(datos);
     }
   } catch (error) {
-    console.error('Error al cargar datos del usuario:', error);
-    // Función simple que devuelve true si la Signal contiene un objeto Usuario (está logueado).
+    console.error(error);
+    this.usuarioActual.set(null);
+  }
+}
+
+
+
+// CHECKED
+// verifica si esta autenticado 
+isAuthenticated(): boolean {
+    return this.usuarioActual() !== null;
+}
+
+
+
+// CHECKED
+// manejo de errores, solo se ejecuta cuando algo sale mal en un try catch
+// captura el error y lo manda por aqui
+private manejarError(error: any): string {
+  // codigo contendria esa cadena que identifica al error 
+  const codigoError = error.code;
+
+  switch (codigoError) {
+    case 'auth/email-already-in-use':
+      return 'Este email ya esta registrado, prueba con otro';
+
+    case 'auth/invalid-email':
+      return 'El correo electronico no tiene un formato valido';
+
+    case 'auth/weak-password':
+      return 'La contraseña necesita de al menos 6 caracteres';
+
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+      return 'El email o la contraseña no son correctos';
+
+    case 'auth/network-request-failed':
+      return 'Parece que no tienes internet';
+
+    default:
+      return 'Ha ocurrido un error inesperado, intentalo de nuevo';
   }
 }
 
 
 
 
-  // VERIFICAR SI ESTÁ AUTENTICADO
-isAuthenticated(): boolean {
-    return this.usuarioActual() !== null;
-}
 
-  // MANEJAR ERRORES DE FIREBASE
-private manejarError(error: any): string {
-    const errores: { [key: string]: string } = {
-    'auth/email-already-in-use': 'Este email ya está registrado',
-    'auth/invalid-email': 'Email inválido',
-    'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres',
-    'auth/user-not-found': 'Credenciales incorrectas',
-    'auth/wrong-password': 'Credenciales incorrectas',
-    'auth/invalid-credential': 'Credenciales incorrectas',
-    'auth/invalid-login-credentials': 'Credenciales incorrectas',
-    'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde',
-    'auth/network-request-failed': 'Error de conexión',
-    'auth/missing-password': 'Debes introducir una contraseña'
-    };
-    // Mapeo de códigos de error de Firebase a mensajes amigables y legibles para el usuario final.
-
-    return errores[error.code] || 'Error desconocido. Intenta de nuevo';
+  async recuperarPassword(email: string): Promise<void> {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      // esta funcion es de firebase, precisamente para mandar ese correo de recuperacion
+      // siempre para funciones de firebase requieren de auth
+    } catch (error: any) {
+      throw this.manejarError(error);
     }
+  }
+
+
+  // CHECKED
+  // ESTA FUNCION ES PARA MODERACION (PARA LUEGO)
+async obtenerUsuarioPorId(uid: string): Promise<Usuario | null> {
+  const referencia = doc(this.firestore, `usuarios/${uid}`);
+  const resultado = await getDoc(referencia);
+  return resultado.exists() ? (resultado.data() as Usuario) : null;
+}
 }

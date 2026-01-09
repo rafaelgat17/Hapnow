@@ -1,33 +1,33 @@
-// Define la forma del interaz que tendra un objeto usuario en la base de datos de Firestore
+// INTERFAZ DEL PERFIL DE USUARIO (cualqueir usuario)
 export interface Usuario {
     uid: string;
-    // Identificador Único Universal (Unique ID) asignado por Firebase Auth. Es la clave primaria en Firestore
+    // ID unico que asigna el propio firebase auth
     email: string;
-    // Correo electrónico del usuario (también usado por Firebase Auth)
+    // Su dirección de correo
     nombre: string;
-    fotoPerfil?: string;
-    // Guardará la URL de la imagen en Firebase Storage
-    biografia?: string;
-    intereses?: string[];
-    reputacion: number;
-    eventosCreados: number;
-    eventosAsistidos: number;
-    rol: 'usuario' | 'admin';
-    // solo puede tomar uno de esos dos valores
-    fechaRegistro: Date;
+    // el nombre que elige el usuario al registrarse
+    
+    suspendido?: boolean;
+    reputacion: number;
+    totalValoraciones: number;
+    eventosCreados: number;
+    eventosAsistidos: number;
+    rol: 'usuario' | 'admin';
+
+    fechaRegistro: Date;
 }
 
 // Define la estructura de datos del registro
 export interface RegistroData {
-    email: string;
-    password: string;
-    // La contraseña solo se usa aquí y se envía a Firebase Auth; nunca se guarda en Firestore.
-    nombre: string;
+    email: string;
+    password: string;
+    // La contraseña solo se usa aquí y se envía a Firebase Auth, nunca se guarda en Firestore
+    nombre: string;
 }
 
 // Define la estructura de datos del login
 export interface LoginData {
-    email: string;
-    password: string;
-    // Estos dos campos se pasan directamente a la función signInWithEmailAndPassword del AuthService.
+    email: string;
+    password: string;
+    // Estos dos campos se pasan directamente a la función signInWithEmailAndPassword del AuthService
 }
